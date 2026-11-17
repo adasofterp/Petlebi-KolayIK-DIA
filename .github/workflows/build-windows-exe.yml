@@ -1,0 +1,60 @@
+name: Build Windows Setup (.exe)
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies and PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller pillow
+
+      - name: Build Standalone Executable with PyInstaller
+        shell: cmd
+        run: |
+          pyinstaller --noconfirm --onedir --windowed --name "Petlebi-KolayIK-DIA" --icon "src/static/adasoftlogo.ico" --add-data "src;src" --add-data "version.json;." --hidden-import "uvicorn.logging" --hidden-import "uvicorn.loops" --hidden-import "uvicorn.loops.auto" --hidden-import "uvicorn.protocols" --hidden-import "uvicorn.protocols.http" --hidden-import "uvicorn.protocols.http.auto" --hidden-import "uvicorn.lifespan" --hidden-import "uvicorn.lifespan.on" desktop_launcher.py
+
+      - name: Compile Setup Wizard (.exe) with Inno Setup
+        shell: cmd
+        run: |
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss
+
+      - name: Create Portable Windows ZIP Archive
+        shell: pwsh
+        run: |
+          Copy-Item ".env.example" -Destination "dist\Petlebi-KolayIK-DIA\.env.example" -Force
+          Compress-Archive -Path "dist\Petlebi-KolayIK-DIA\*" -DestinationPath "dist_installer\Petlebi-KolayIK-DIA-Windows-Portable.zip" -Force
+
+      - name: Upload Setup Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Petlebi-KolayIK-DIA-Setup
+          path: |
+            dist_installer/Petlebi-KolayIK-DIA-Setup.exe
+            dist_installer/Petlebi-KolayIK-DIA-Windows-Portable.zip
+
+      - name: Publish to GitHub Releases (on tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist_installer/Petlebi-KolayIK-DIA-Setup.exe
+            dist_installer/Petlebi-KolayIK-DIA-Windows-Portable.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

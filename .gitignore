@@ -1,0 +1,27 @@
+# Hassas Ortam Değişkenleri ve Yerel Veriler
+.env
+.env.*
+!.env.example
+data/local_overrides.json
+data/local_overrides*.json
+data/dia_audit.jsonl
+
+# Python & Sanal Ortam
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Derleme ve Paket Çıktıları
+build/
+dist/
+dist_installer/
+teslimat/
+*.spec
+
+# İşletim Sistemi / IDE
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,2736 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ada-Soft DDM | Petlebi — Kolay İK ↔ DİA ERP Entegrasyon Paneli (adasoftddm.com)</title>
+  <link rel="icon" type="image/png" href="/static/adasoftlogo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* Ada-Soft Dijital Dönüşüm Merkezi (adasoftddm.com) Kurumsal Renk Paleti */
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --surface-subtle: #f0f4f9;
+      --border: #d7dde7;
+      --border-strong: #b5bfcf;
+      --text: #141b29;
+      --text-secondary: #374050;
+      --text-muted: #545d6d;
+      --navy: #141f33;
+      --navy-rule: #253552;
+      --primary: #2974b8;
+      --primary-hover: #1e5b94;
+      --primary-soft: #e8f2fc;
+      --adasoft-sky: #5ccbfa;
+      --adasoft-orange: #e68222;
+      --adasoft-orange-soft: #fff4e8;
+      --success: #0d7a52;
+      --success-soft: #eafaf3;
+      --success-border: #a3e6c8;
+      --warning: #b45309;
+      --warning-soft: #fffbeb;
+      --warning-border: #fde68a;
+      --danger: #c82828;
+      --danger-soft: #fef2f2;
+      --danger-border: #fecaca;
+      --radius: 8px;
+      --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-display: "Bricolage Grotesque", "IBM Plex Sans", -apple-system, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+      font-family: var(--font-mono);
+    }
+
+    /* Header (Ada-Soft DDM Kurumsal Üst Bar) */
+    .topbar {
+      background: linear-gradient(135deg, #111b2e 0%, #172640 60%, #1a2d4c 100%);
+      color: #f8fafc;
+      padding: 11px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--adasoft-orange);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 4px 14px rgba(17, 27, 46, 0.14);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-logo-wrap {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+      transition: transform 0.15s ease;
+    }
+    .brand-logo-wrap:hover {
+      transform: translateY(-1px);
+    }
+    .brand-logo-img {
+      height: 36px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.25px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .adasoft-domain-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(230, 130, 34, 0.18);
+      border: 1px solid rgba(230, 130, 34, 0.55);
+      color: #ffb366;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-decoration: none;
+      letter-spacing: 0;
+      transition: all 0.15s ease;
+    }
+    .adasoft-domain-badge:hover {
+      background: var(--adasoft-orange);
+      color: #ffffff;
+      border-color: var(--adasoft-orange);
+    }
+    .brand-sub {
+      font-size: 11.5px;
+      color: #b4c3d8;
+      margin-top: 2px;
+    }
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .status-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid #2e4266;
+      color: #e2e8f0;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #64748b;
+    }
+    .dot.ok { background: #10b981; }
+    .dot.err { background: #ef4444; }
+
+    /* Control Strip */
+    .control-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .period-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .field-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .field-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    input[type="date"], input[type="text"], input[type="number"], input[type="password"], select {
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12.5px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.12);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-success:hover:not(:disabled) { background: #065f46; }
+    .btn-secondary {
+      background: #fff;
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+    .btn-secondary:hover:not(:disabled) { background: var(--surface-subtle); }
+    .btn-ghost {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    .btn-ghost:hover { background: #334155; }
+    .btn-xs {
+      padding: 4px 8px;
+      font-size: 11.5px;
+    }
+
+    /* Navigation Tabs */
+    .tabs-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 11px 16px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .tab-count {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+    }
+    .tab-btn.active .tab-count {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    /* Main Container */
+    .main {
+      padding: 20px 24px 48px;
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* KPI Strip */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+    }
+    .kpi-label {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 4px;
+      font-family: var(--font-mono);
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Section Card & Toolbar */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .card-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--surface-subtle);
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--navy);
+    }
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      max-height: 640px;
+      overflow-y: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      z-index: 10;
+    }
+    tbody td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #eef0f4;
+      vertical-align: middle;
+    }
+    tbody tr:hover { background: #f8fafc; }
+    tbody tr.selected-row { background: #eff6ff; }
+
+    /* Inline inputs inside tables */
+    .cell-input {
+      width: 100%;
+      min-width: 72px;
+      padding: 4px 6px;
+      font-size: 12px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: transparent;
+    }
+    .cell-input:hover {
+      border-color: var(--border-strong);
+      background: #fff;
+    }
+    .cell-input:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+    .cell-num {
+      text-align: right;
+      font-family: var(--font-mono);
+      min-width: 64px;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .badge-new {
+      background: var(--warning-soft);
+      color: var(--warning);
+      border-color: var(--warning-border);
+    }
+    .badge-update {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-color: #bfdbfe;
+    }
+    .badge-synced {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: var(--success-border);
+    }
+    .badge-danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: var(--danger-border);
+    }
+
+    .diff-chip {
+      display: inline-block;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 11px;
+      margin: 1px 2px;
+      color: #334155;
+    }
+
+    /* Alert Banner */
+    .banner {
+      padding: 10px 16px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .banner.show { display: flex; }
+    .banner-info { background: var(--primary-soft); color: #1e3a8a; border: 1px solid #bfdbfe; }
+    .banner-success { background: var(--success-soft); color: #065f46; border: 1px solid var(--success-border); }
+    .banner-error { background: var(--danger-soft); color: #991b1b; border: 1px solid var(--danger-border); }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 560px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .modal-body {
+      padding: 16px 18px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .modal-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--surface-subtle);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .form-row {
+      margin-bottom: 12px;
+    }
+    .form-row label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-secondary);
+    }
+    .form-row input { width: 100%; }
+
+    /* Bekletme ve Rakamsal İlerleme Modalı */
+    .progress-modal {
+      max-width: 620px;
+    }
+    .spinner-ring {
+      width: 24px;
+      height: 24px;
+      border: 3px solid #dbeafe;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spinAnim 0.75s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spinAnim {
+      to { transform: rotate(360deg); }
+    }
+    .prog-status-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .prog-status-icon.ok {
+      display: inline-flex;
+      background: var(--success-soft);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+    .prog-status-icon.err {
+      display: inline-flex;
+      background: var(--danger-soft);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+    .prog-bar-wrap {
+      background: #e2e8f0;
+      border-radius: 999px;
+      height: 12px;
+      overflow: hidden;
+      margin: 10px 0 6px;
+    }
+    .prog-bar-fill {
+      background: linear-gradient(90deg, #2563eb, #0ea5e9);
+      height: 100%;
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+    .prog-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .prog-metric-box {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .prog-metric-label {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .prog-metric-val {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      margin-top: 2px;
+      color: var(--text);
+    }
+    .prog-log-box {
+      margin-top: 12px;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      max-height: 140px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+    .prog-log-item {
+      padding: 1px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .prog-log-item:last-child { border-bottom: none; }
+    .dept-info-bar {
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .adasoft-footer {
+      max-width: 1680px;
+      margin: 8px auto 32px;
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .adasoft-footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .adasoft-footer-brand img {
+      height: 28px;
+      width: auto;
+      background: #fff;
+      padding: 3px 6px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .adasoft-footer-link {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+      font-family: var(--font-mono);
+    }
+    .adasoft-footer-link:hover {
+      color: var(--adasoft-orange);
+      text-decoration: underline;
+    }
+
+    @media print {
+      .topbar, .control-bar, .tabs-bar, .toolbar-actions, .adasoft-footer, .no-print { display: none !important; }
+      .tab-pane:not(.active) { display: none !important; }
+      .table-wrap { max-height: none !important; overflow: visible !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Üst Bilgi ve Durum Çubuğu (Ada-Soft DDM Kurumsal Kimlik) -->
+  <header class="topbar">
+    <div class="brand">
+      <a href="https://www.adasoftddm.com" target="_blank" rel="noopener" class="brand-logo-wrap" title="Ada-Soft Dijital Dönüşüm Merkezi — adasoftddm.com">
+        <img src="/static/adasoftlogo.png" alt="Ada-Soft Dijital Dönüşüm Merkezi" class="brand-logo-img" />
+      </a>
+      <div>
+        <div class="brand-title">
+          <span>Petlebi — Kolay İK ↔ DİA Cloud ERP Entegrasyon</span>
+        </div>
+        <div class="brand-sub" id="versionLabel">Ada-Soft Dijital Dönüşüm Merkezi (adasoftddm.com) • Sürüm v1.1.0 • Kontrollü Veri Eşleştirme ve Aktarım</div>
+      </div>
+    </div>
+    <div class="status-group">
+      <div class="status-pill" id="kolayStatusPill">
+        <span class="dot" id="kolayDot"></span>
+        <span id="kolayStatusText">Kolay İK: Kontrol ediliyor...</span>
+      </div>
+      <div class="status-pill" id="diaStatusPill">
+        <span class="dot" id="diaDot"></span>
+        <span id="diaStatusText">DİA ERP: Kontrol ediliyor...</span>
+      </div>
+      <button class="btn btn-ghost" onclick="checkUpdates()">Güncellemeleri Kontrol Et</button>
+      <button class="btn btn-ghost" onclick="openSettingsModal()">Ayarlar</button>
+    </div>
+  </header>
+
+  <!-- Tarih Aralığı ve Veri Çağırma Çubuğu -->
+  <section class="control-bar">
+    <div class="period-controls">
+      <div class="field-group">
+        <label for="startDate">Başlangıç:</label>
+        <input type="date" id="startDate" value="2026-10-01" />
+      </div>
+      <div class="field-group">
+        <label for="endDate">Bitiş:</label>
+        <input type="date" id="endDate" value="2026-10-31" />
+      </div>
+      <div class="field-group" id="quickMonthsGroup">
+        <button class="btn btn-secondary btn-xs" onclick="setQuickMonth(2026, 9)">Eylül 2026</button>
+        <button class="btn btn-secondary btn-xs" onclick="setQuickMonth(2026, 10)">Ekim 2026</button>
+        <button class="btn btn-secondary btn-xs" onclick="setQuickMonth(2026, 11)">Kasım 2026</button>
+      </div>
+      <button class="btn btn-primary" id="btnFetchAll" onclick="fetchAllStagedData()">
+        Kolay İK'dan Verileri Çağır &amp; DİA İle Karşılaştır
+      </button>
+    </div>
+    <div class="toolbar-actions">
+      <span style="font-size:12px; color:var(--text-muted);">
+        Otomatik aktarım kapalıdır. Verileri inceleyip düzenledikten sonra seçerek DİA'ya aktarabilirsiniz.
+      </span>
+    </div>
+  </section>
+
+  <!-- Sekmeler -->
+  <nav class="tabs-bar">
+    <button class="tab-btn active" data-tab="tab-employees" onclick="switchTab('tab-employees')">
+      1. Personel Kartları (Özlük) <span class="tab-count" id="cntEmployees">0</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-pdks" onclick="switchTab('tab-pdks')">
+      2. PDKS &amp; Fazla Mesai <span class="tab-count" id="cntPdks">0</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-leaves" onclick="switchTab('tab-leaves')">
+      3. İzin ve Raporlar <span class="tab-count" id="cntLeaves">0</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-transactions" onclick="switchTab('tab-transactions')">
+      4. Avans / Ek Ödeme / Kesinti <span class="tab-count" id="cntTransactions">0</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-payroll" onclick="switchTab('tab-payroll')">
+      5. Aylık Puantaj &amp; Maaş Mahsup Fişi <span class="tab-count" id="cntPayroll">0</span>
+    </button>
+  </nav>
+
+  <!-- Ana İçerik -->
+  <main class="main">
+    <div id="statusBanner" class="banner">
+      <span id="statusBannerText"></span>
+      <button class="btn btn-secondary btn-xs" onclick="hideBanner()">Kapat</button>
+    </div>
+
+    <!-- SEKME 1: PERSONEL KARTLARI -->
+    <section id="tab-employees" class="tab-pane active">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Kolay İK Toplam Personel</div>
+          <div class="kpi-value" id="kpiEmpTotal">0</div>
+          <div class="kpi-sub">Aktif ve işten ayrılmış tüm kayıtlar</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">DİA'da Mevcut Kart</div>
+          <div class="kpi-value" id="kpiEmpDia">0</div>
+          <div class="kpi-sub">DİA ERP üzerinde kayıtlı personel kartı</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">DİA'da Yok (Yeni Eklenecek)</div>
+          <div class="kpi-value" style="color:var(--warning);" id="kpiEmpNew">0</div>
+          <div class="kpi-sub">Kolay İK'da var, DİA'da henüz açılmamış</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Fark Var (Güncellenecek)</div>
+          <div class="kpi-value" style="color:var(--primary);" id="kpiEmpUpdate">0</div>
+          <div class="kpi-sub">TC, çıkış tarihi, görev veya durum farkı</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">İşten Çıkan / Giriş-Çıkış Eşitleme</div>
+          <div class="kpi-value" style="color:var(--adasoft-orange);" id="kpiEmpExitDiff">0</div>
+          <div class="kpi-sub" id="kpiEmpExitSub">Kolay İK Ayrılan (P): 0 kayıt</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>Personel Özlük Eşleştirme ve DİA Kart Yönetimi</span>
+          </div>
+          <div class="toolbar-actions">
+            <input type="text" id="empSearch" placeholder="Ad, Soyad, TC, Departman ara..." oninput="renderEmployeesTable()" style="width:210px;" />
+            <select id="empFilter" onchange="renderEmployeesTable()">
+              <option value="ALL">Tüm Personeller</option>
+              <option value="ACTIONABLE">DİA'da Olmayan + Fark Olanlar</option>
+              <option value="ENTRY_EXIT_DIFF">İşten Çıkan / Giriş-Çıkış Farkı Olanlar</option>
+              <option value="NEW_IN_KOLAYIK">Sadece DİA'da Olmayanlar (Yeni)</option>
+              <option value="NEEDS_UPDATE">Sadece Fark Olanlar (Güncellenecek)</option>
+              <option value="ACTIVE">Sadece Aktif Çalışanlar (A)</option>
+              <option value="PASSIVE">Sadece İşten Ayrılanlar (P)</option>
+            </select>
+            <button class="btn btn-secondary btn-xs" onclick="selectEmployeesByFilter('NEW_IN_KOLAYIK')">Eksikleri Seç</button>
+            <button class="btn btn-secondary btn-xs" onclick="selectEmployeesByFilter('NEEDS_UPDATE')">Fark Olanları Seç</button>
+            <button class="btn" style="background:var(--adasoft-orange); color:#fff; border-color:#d47115;" id="btnSyncTerminated" onclick="syncEntryExitEmployees()" title="Kolay İK'da işten çıkarılan veya yeni işe başlayan personelleri kontrol eder ve DİA ile eşitler">
+              İşten Çıkanları &amp; Giriş-Çıkışları DİA İle Eşitle (<span id="exitDiffCount">0</span>)
+            </button>
+            <button class="btn btn-success" id="btnPushEmployees" onclick="pushSelectedEmployees()">
+              Seçilen Personelleri DİA'ya Aktar (<span id="selEmpCount">0</span>)
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px;"><input type="checkbox" id="chkAllEmp" onchange="toggleAllEmployees(this.checked)" /></th>
+                <th>Durum / Fark Analizi</th>
+                <th>DİA Sicil No</th>
+                <th>Adı</th>
+                <th>Soyadı</th>
+                <th>TC Kimlik No</th>
+                <th>Çalışma</th>
+                <th>İşe Giriş</th>
+                <th>İşten Çıkış &amp; SGK Çıkış Nedeni</th>
+                <th>Departman / Görev</th>
+                <th>Gider Hesabı Profili</th>
+                <th>Ücret Türü</th>
+                <th style="text-align:right;">Maaş (TL)</th>
+              </tr>
+            </thead>
+            <tbody id="empTableBody">
+              <tr><td colspan="13" style="text-align:center; padding:24px; color:var(--text-muted);">Veriler yükleniyor...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEKME 2: PDKS & FAZLA MESAİ -->
+    <section id="tab-pdks" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>PDKS Onaylı Fazla Mesai Hareketleri</span>
+          </div>
+          <div class="toolbar-actions">
+            <input type="text" id="pdksSearch" placeholder="Personel veya açıklama ara..." oninput="renderPdksTable()" style="width:220px;" />
+            <button class="btn btn-primary" onclick="recalculatePuantajFromPdks()">
+              Mesai Değişikliklerini Aylık Puantaj Tablosuna Yansıt
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>DİA Sicil</th>
+                <th>Personel Adı Soyadı</th>
+                <th>Departman</th>
+                <th>Başlangıç Zamanı</th>
+                <th>Bitiş Zamanı</th>
+                <th style="text-align:right;">Dakika</th>
+                <th style="text-align:right;">DİA Saat (Düzenlenebilir)</th>
+                <th>Hedef DİA Puantaj Alanı</th>
+                <th>PDKS Açıklaması</th>
+              </tr>
+            </thead>
+            <tbody id="pdksTableBody">
+              <tr><td colspan="9" style="text-align:center; padding:24px; color:var(--text-muted);">Seçili tarih aralığında PDKS verisi görmek için üstten "Verileri Çağır" butonuna tıklayın.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEKME 3: İZİN VE RAPORLAR -->
+    <section id="tab-leaves" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>Onaylı İzin ve Raporlar (Yıllık İzinler DİA İzin Modülüne, Rapor ve Ücretsiz İzinler Puantaja Yansır)</span>
+          </div>
+          <div class="toolbar-actions">
+            <input type="text" id="leaveSearch" placeholder="Personel veya izin türü ara..." oninput="renderLeavesTable()" style="width:220px;" />
+            <button class="btn btn-secondary btn-xs" onclick="recalculatePuantajFromLeaves()">İzin Günlerini Puantaja Yansıt</button>
+            <button class="btn btn-success" id="btnPushLeaves" onclick="pushSelectedLeaves()">
+              Seçilen Yıllık İzinleri DİA İzin Modülüne Aktar (<span id="selLeaveCount">0</span>)
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px;"><input type="checkbox" id="chkAllLeaves" onchange="toggleAllLeaves(this.checked)" /></th>
+                <th>DİA İzin Modülü Durumu</th>
+                <th>DİA Sicil</th>
+                <th>Personel Adı Soyadı</th>
+                <th>Kolay İK İzin Türü</th>
+                <th>Ücretli</th>
+                <th>Başlangıç Tarihi</th>
+                <th>Bitiş Tarihi</th>
+                <th style="text-align:right;">Dönem Günü</th>
+                <th>Hedef DİA Puantaj Gün Alanı</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody id="leavesTableBody">
+              <tr><td colspan="11" style="text-align:center; padding:24px; color:var(--text-muted);">Veri yok.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEKME 4: AVANS / MASRAF / KESİNTİ -->
+    <section id="tab-transactions" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>Avans, Prim, Masraf ve Kesinti Hareketleri</span>
+          </div>
+          <div class="toolbar-actions">
+            <button class="btn btn-primary" onclick="pushSelectedTransactions('mahsup')">
+              Seçilenleri Muhasebe Fişi Olarak Aktar (<span id="selTrCount">0</span>)
+            </button>
+            <button class="btn btn-secondary" onclick="pushSelectedTransactions('ekodeme')">
+              Personel Ek Ödeme / Kesinti Fişi Olarak Aktar
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px;"><input type="checkbox" id="chkAllTr" onchange="toggleAllTransactions(this.checked)" /></th>
+                <th>Kolay İK Onay</th>
+                <th>DİA Sicil</th>
+                <th>Personel Adı Soyadı</th>
+                <th>İşlem Tarihi</th>
+                <th>Kolay İK Türü</th>
+                <th>DİA İşlem Yönü</th>
+                <th style="text-align:right;">Tutar (TL)</th>
+                <th>Borç Hesap Kodu</th>
+                <th>Alacak Hesap Kodu</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody id="trTableBody">
+              <tr><td colspan="11" style="text-align:center; padding:24px; color:var(--text-muted);">Veri yok.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEKME 5: AYLIK PUANTAJ & MAAŞ TAHAKKUK MAHSUP FİŞİ -->
+    <section id="tab-payroll" class="tab-pane">
+      <!-- 5A: DİA Puantaj Tablosu -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>5A. Aylık DİA Personel Puantaj Tablosu (1 Gün = 7,5 Saat / 30 Gün = 225 Saat)</span>
+          </div>
+          <div class="toolbar-actions">
+            <input type="text" id="puantajSearch" placeholder="Personel ara..." oninput="renderPuantajTable()" style="width:200px;" />
+            <button class="btn btn-success" id="btnPushPuantaj" onclick="pushSelectedTimesheets()">
+              Seçilen Puantajları DİA'ya Kaydet (<span id="selPuantajCount">0</span>)
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px;"><input type="checkbox" id="chkAllPuantaj" onchange="toggleAllPuantaj(this.checked)" /></th>
+                <th>DİA Puantaj</th>
+                <th>Sicil No</th>
+                <th>Personel Adı Soyadı</th>
+                <th>Ücret</th>
+                <th style="text-align:right;">Maaş (TL)</th>
+                <th style="text-align:right;">Normal Gün</th>
+                <th style="text-align:right;">H.Sonu Gün</th>
+                <th style="text-align:right;">R.Tatil Gün</th>
+                <th style="text-align:right;">Ücretli İzin</th>
+                <th style="text-align:right;">Ücretsiz İzin</th>
+                <th style="text-align:right;">Rapor Gün</th>
+                <th style="text-align:right;">SGK Gün</th>
+                <th style="text-align:right;">SGK Saat</th>
+                <th style="text-align:right;">H.İçi FM (Saat)</th>
+                <th style="text-align:right;">H.Sonu FM (Saat)</th>
+                <th style="text-align:right;">R.Tatil FM (Saat)</th>
+                <th style="text-align:right;">DİA Net Kazanç</th>
+              </tr>
+            </thead>
+            <tbody id="puantajTableBody">
+              <tr><td colspan="18" style="text-align:center; padding:24px; color:var(--text-muted);">Veri yok.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5B: Muhasebe Maaş Tahakkuk Mahsup Fişi -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>5B. Aylık Maaş Tahakkuk Muhasebe Mahsup Fişi (770 / 760 / 335 / 360 / 361)</span>
+          </div>
+          <div class="toolbar-actions">
+            <div class="field-group">
+              <label>Fiş No:</label>
+              <input type="text" id="mahsupFisNo" style="width:120px;" />
+            </div>
+            <div class="field-group">
+              <label>Fiş Tarihi:</label>
+              <input type="date" id="mahsupTarih" />
+            </div>
+            <div class="field-group">
+              <label>Açıklama:</label>
+              <input type="text" id="mahsupAciklama" style="width:260px;" />
+            </div>
+            <button class="btn btn-secondary btn-xs" onclick="addMahsupLine()">+ Satır Ekle</button>
+            <button class="btn btn-primary" id="btnPushMahsup" onclick="pushMahsupVoucher()">
+              Mahsup Fişini DİA'ya Kaydet
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:150px;">Muhasebe Hesap Kodu</th>
+                <th>Hesap Adı</th>
+                <th>Kalem Açıklaması</th>
+                <th style="text-align:right; width:160px;">Borç (TL)</th>
+                <th style="text-align:right; width:160px;">Alacak (TL)</th>
+                <th style="width:60px;">Sil</th>
+              </tr>
+            </thead>
+            <tbody id="mahsupTableBody"></tbody>
+            <tfoot>
+              <tr style="background:#f8fafc; font-weight:700;">
+                <td colspan="3" style="text-align:right; padding:10px;">TOPLAM &amp; DENKLİK KONTROLÜ:</td>
+                <td class="num" style="text-align:right; padding:10px;" id="mahsupTotalBorc">0,00</td>
+                <td class="num" style="text-align:right; padding:10px;" id="mahsupTotalAlacak">0,00</td>
+                <td id="mahsupBalanceStatus" style="padding:10px;"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="adasoft-footer">
+    <div class="adasoft-footer-brand">
+      <img src="/static/adasoftlogo.png" alt="Ada-Soft Logo" />
+      <div>
+        <strong style="color:var(--navy); font-family:var(--font-display);">Ada-Soft Dijital Dönüşüm Merkezi</strong>
+        <span> • DİA Cloud ERP Yetkili İş Ortağı &amp; Özel Yazılım Çözümleri</span>
+      </div>
+    </div>
+    <div>
+      Kurumsal Web: <a href="https://www.adasoftddm.com" target="_blank" rel="noopener" class="adasoft-footer-link">www.adasoftddm.com</a>
+      <span style="margin:0 6px;">•</span>
+      <span>Petlebi Kolay İK ↔ DİA ERP Entegrasyon Sistemi</span>
+    </div>
+  </footer>
+
+  <!-- Ayarlar & Güncelleme Modalı -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span>Bağlantı ve Sistem Ayarları</span>
+        <button class="btn btn-secondary btn-xs" onclick="closeSettingsModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label>Kolay İK Bearer Token (Değiştirmek için yeni token girin, boş bırakırsanız mevcut korunur)</label>
+          <input type="password" id="setKolayToken" placeholder="Mevcut token kayıtlı" />
+        </div>
+        <div class="form-row">
+          <label>DİA Sunucu Adresi (Örn: https://sunucu.ws.dia.com.tr/api/v3)</label>
+          <input type="text" id="setDiaBaseUrl" placeholder="https://sunucu.ws.dia.com.tr/api/v3" />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-row">
+            <label>DİA Kullanıcı Adı</label>
+            <input type="text" id="setDiaUser" />
+          </div>
+          <div class="form-row">
+            <label>DİA Şifresi (Değiştirmek için girin)</label>
+            <input type="password" id="setDiaPass" placeholder="Mevcut şifre kayıtlı" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label>DİA API Anahtarı (API Key — Değiştirmek için girin, boş bırakırsanız mevcut korunur)</label>
+          <input type="password" id="setDiaApiKey" placeholder="Mevcut API Anahtarı kayıtlı" />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+          <div class="form-row">
+            <label>DİA Firma Kodu</label>
+            <input type="number" id="setDiaFirma" />
+          </div>
+          <div class="form-row">
+            <label>DİA Dönem Kodu</label>
+            <input type="number" id="setDiaDonem" />
+          </div>
+          <div class="form-row">
+            <label>Merkez Şube Anahtarı</label>
+            <input type="number" id="setDiaSubeKey" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Resmi Güncelleme Deposu (Güvenlik Kilidi Aktif)</label>
+          <input type="text" id="setGithubRepo" readonly style="background:#f1f5f9; color:var(--text-muted);" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeSettingsModal()">İptal</button>
+        <button class="btn btn-primary" onclick="saveSettings()">Kaydet ve Bağlantıyı Yenile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bekletme Animasyonu & Rakamsal İlerleme Modalı -->
+  <div class="modal-backdrop" id="progressModal" style="z-index:200;">
+    <div class="modal progress-modal">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="spinner-ring" id="progSpinner"></div>
+          <div class="prog-status-icon" id="progStatusIcon">✓</div>
+          <span id="progTitle">İşlem Yürütülüyor...</span>
+        </div>
+        <span class="badge badge-update num" id="progFractionBadge">0 / 0</span>
+      </div>
+      <div class="modal-body">
+        <div id="progSubtitle" style="font-size:12.5px; color:var(--text-secondary); font-weight:500;">
+          Lütfen bekleyin, veriler işleniyor...
+        </div>
+        <div class="prog-bar-wrap">
+          <div class="prog-bar-fill" id="progBarFill"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:11.5px; color:var(--text-muted);">
+          <span id="progStatusHint">Canlı İlerleme Durumu</span>
+          <span class="num" id="progPercentText">%0</span>
+        </div>
+
+        <div class="prog-metrics-grid">
+          <div class="prog-metric-box">
+            <div class="prog-metric-label" id="progMetric1Label">TOPLAM</div>
+            <div class="prog-metric-val" id="progMetric1Val">0</div>
+          </div>
+          <div class="prog-metric-box">
+            <div class="prog-metric-label" id="progMetric2Label">ALINAN / AKTARILAN</div>
+            <div class="prog-metric-val" style="color:var(--primary);" id="progMetric2Val">0</div>
+          </div>
+          <div class="prog-metric-box">
+            <div class="prog-metric-label" id="progMetric3Label">YENİ / GÜNCELLENEN</div>
+            <div class="prog-metric-val" style="color:var(--success);" id="progMetric3Val">0</div>
+          </div>
+          <div class="prog-metric-box">
+            <div class="prog-metric-label" id="progMetric4Label">HATA / UYARI</div>
+            <div class="prog-metric-val" style="color:var(--danger);" id="progMetric4Val">0</div>
+          </div>
+        </div>
+
+        <div class="prog-log-box" id="progLogBox"></div>
+      </div>
+      <div class="modal-footer">
+        <span id="progFooterNote" style="font-size:12px; color:var(--text-muted); margin-right:auto;">
+          İşlem sırasında pencereyi kapatmayın...
+        </span>
+        <button class="btn btn-primary" id="progCloseBtn" onclick="closeProgressModal()" disabled>
+          İşlem Sürüyor...
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- K7: Otomatik CSRF Güvenlik Anahtarı Ekleme ---
+    const _nativeFetch = window.fetch.bind(window);
+    window.fetch = function(input, init = {}) {
+      const headers = new Headers(init.headers || {});
+      if (window.__CSRF_TOKEN__) {
+        headers.set("X-CSRF-Token", window.__CSRF_TOKEN__);
+      }
+      return _nativeFetch(input, { ...init, headers });
+    };
+
+    // --- Altın Kural #1: XSS ve Tırnak Korumalı HTML Kaçış Fonksiyonu ---
+    function escHtml(val) {
+      if (val === null || val === undefined) return "";
+      return String(val)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // --- Durum Değişkenleri ---
+    let employeesData = [];
+    let sgkExitReasons = [
+      { code: "01", name: "01 - Deneme süreli işveren feshi" },
+      { code: "02", name: "02 - Deneme süreli işçi feshi" },
+      { code: "03", name: "03 - İstifa (Belirsiz süreli işçi feshi)" },
+      { code: "04", name: "04 - İşveren tarafından haklı neden bildirilmeden fesih" },
+      { code: "05", name: "05 - Belirli süreli sözleşmenin sona ermesi" },
+      { code: "08", name: "08 - Emeklilik (yaşlılık) veya toptan ödeme" },
+      { code: "10", name: "10 - Ölüm" },
+      { code: "12", name: "12 - Askerlik" },
+      { code: "13", name: "13 - Kadın işçinin evlenmesi" },
+      { code: "14", name: "14 - Emeklilik yaş dışı şartların tamamlanması" },
+      { code: "17", name: "17 - İşyerinin kapanması" },
+      { code: "18", name: "18 - İşin sona ermesi" },
+      { code: "22", name: "22 - Diğer nedenler" },
+      { code: "23", name: "23 - İşçi tarafından zorunlu nedenle fesih" },
+      { code: "24", name: "24 - İşçi tarafından sağlık nedeniyle fesih" },
+      { code: "25", name: "25 - İşçi tarafından ahlak/iyiniyet kurallarına aykırılık" },
+      { code: "27", name: "27 - İşveren tarafından zorunlu/tutukluluk feshi" },
+      { code: "28", name: "28 - İşveren tarafından sağlık nedeni ile fesih" },
+      { code: "29", name: "29 - İşveren tarafından ahlak/iyiniyet kurallarına aykırılık" },
+    ];
+    let selectedEmpIds = new Set();
+
+    let pdksData = [];
+    let leavesData = [];
+    let selectedLeaveIds = new Set();
+
+    let transactionsData = [];
+    let selectedTrIds = new Set();
+
+    let puantajData = [];
+    let selectedPuantajIds = new Set();
+
+    let mahsupData = { tarih: "", fisno: "", aciklama: "", lines: [] };
+    let muhAccountsMap = {};
+    let fetchReqSeq = 0;
+
+    // Altın Kural #7: Türkçe karakter normalizasyonu (normTR)
+    function normTR(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/İ/g, "i")
+        .replace(/I/g, "i")
+        .replace(/ı/g, "i")
+        .toLocaleLowerCase("tr-TR")
+        .replace(/i̇/g, "i")
+        .replace(/ı/g, "i")
+        .replace(/ş/g, "s")
+        .replace(/ğ/g, "g")
+        .replace(/ü/g, "u")
+        .replace(/ö/g, "o")
+        .replace(/ç/g, "c")
+        .trim();
+    }
+
+    function fmtMoney(val) {
+      const n = Number(val || 0);
+      return n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function initDynamicPeriodButtons() {
+      const trMonths = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+      const now = new Date();
+      // Varsayılan olarak bir önceki tam ayı seç (bordro/puantaj genelde kapanan ay için yapılır)
+      const defDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const defY = defDate.getFullYear();
+      const defM = defDate.getMonth() + 1;
+      const defLast = new Date(defY, defM, 0).getDate();
+      document.getElementById("startDate").value = `${defY}-${String(defM).padStart(2, "0")}-01`;
+      document.getElementById("endDate").value = `${defY}-${String(defM).padStart(2, "0")}-${String(defLast).padStart(2, "0")}`;
+
+      const grp = document.getElementById("quickMonthsGroup");
+      if (!grp) return;
+      const btns = [];
+      for (let offset = -2; offset <= 0; offset++) {
+        const d = new Date(now.getFullYear(), now.getMonth() + offset, 1);
+        const y = d.getFullYear();
+        const m = d.getMonth() + 1;
+        btns.push(`<button class="btn btn-secondary btn-xs" onclick="setQuickMonth(${y}, ${m})">${trMonths[m - 1]} ${y}</button>`);
+      }
+      grp.innerHTML = btns.join("");
+    }
+
+    function showBanner(msg, type = "info") {
+      const el = document.getElementById("statusBanner");
+      const txt = document.getElementById("statusBannerText");
+      el.className = `banner show banner-${type}`;
+      txt.textContent = msg;
+    }
+
+    function hideBanner() {
+      document.getElementById("statusBanner").className = "banner";
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabId);
+      });
+      document.querySelectorAll(".tab-pane").forEach(pane => {
+        pane.classList.toggle("active", pane.id === tabId);
+      });
+    }
+
+    function setQuickMonth(year, month) {
+      const lastDay = new Date(year, month, 0).getDate();
+      const mm = String(month).padStart(2, "0");
+      document.getElementById("startDate").value = `${year}-${mm}-01`;
+      document.getElementById("endDate").value = `${year}-${mm}-${String(lastDay).padStart(2, "0")}`;
+      fetchAllStagedData();
+    }
+
+    // --- Sağlık & Bağlantı Kontrolü ---
+    async function loadHealth() {
+      try {
+        const res = await fetch("/api/health");
+        const data = await res.json();
+        muhAccountsMap = data.accounts || {};
+        document.getElementById("versionLabel").textContent =
+          `Ada-Soft Dijital Dönüşüm Merkezi (adasoftddm.com) • Sürüm v${data.version} • Petlebi Kontrollü Veri Eşleştirme Paneli`;
+
+        const kDot = document.getElementById("kolayDot");
+        const kTxt = document.getElementById("kolayStatusText");
+        if (data.kolayik?.connected) {
+          kDot.className = "dot ok";
+          kTxt.textContent = "Kolay İK v2: Bağlı";
+        } else {
+          kDot.className = "dot err";
+          kTxt.textContent = "Kolay İK: Bağlantı Hatası";
+        }
+
+        const dDot = document.getElementById("diaDot");
+        const dTxt = document.getElementById("diaStatusText");
+        if (data.dia?.connected) {
+          dDot.className = "dot ok";
+          dTxt.textContent = `DİA ERP: Firma ${data.dia.firma_kodu}/Dönem ${data.dia.donem_kodu} (${fmtMoney(data.dia.credit)} Kontör)`;
+        } else {
+          dDot.className = "dot err";
+          dTxt.textContent = "DİA ERP: Bağlantı Hatası";
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // --- Bekletme Animasyonu & Rakamsal İlerleme Modalı Yönetimi ---
+    function openProgressModal({ title, subtitle, m1Label, m2Label, m3Label, m4Label, total = 0 }) {
+      document.getElementById("progTitle").textContent = title || "İşlem Yürütülüyor...";
+      document.getElementById("progSubtitle").textContent = subtitle || "Lütfen bekleyin...";
+      document.getElementById("progSpinner").style.display = "block";
+      const iconEl = document.getElementById("progStatusIcon");
+      iconEl.className = "prog-status-icon";
+      iconEl.style.display = "none";
+
+      document.getElementById("progFractionBadge").textContent = `0 / ${total}`;
+      document.getElementById("progBarFill").style.width = "4%";
+      document.getElementById("progPercentText").textContent = "%0";
+      document.getElementById("progStatusHint").textContent = "İşlem devam ediyor...";
+
+      document.getElementById("progMetric1Label").textContent = m1Label || "TOPLAM";
+      document.getElementById("progMetric2Label").textContent = m2Label || "İŞLENEN";
+      document.getElementById("progMetric3Label").textContent = m3Label || "BAŞARILI";
+      document.getElementById("progMetric4Label").textContent = m4Label || "HATA";
+
+      document.getElementById("progMetric1Val").textContent = String(total);
+      document.getElementById("progMetric2Val").textContent = "0";
+      document.getElementById("progMetric3Val").textContent = "0";
+      document.getElementById("progMetric4Val").textContent = "0";
+
+      document.getElementById("progLogBox").innerHTML = "";
+      document.getElementById("progFooterNote").textContent = "Lütfen bekleyin, sunucu ile iletişim kuruluyor...";
+      const closeBtn = document.getElementById("progCloseBtn");
+      closeBtn.disabled = true;
+      closeBtn.textContent = "İşlem Sürüyor...";
+      document.getElementById("progressModal").classList.add("show");
+    }
+
+    function updateProgressModal({ subtitle, processed, total, m1Val, m2Val, m3Val, m4Val }) {
+      if (subtitle !== undefined) {
+        document.getElementById("progSubtitle").textContent = subtitle;
+      }
+      if (processed !== undefined && total !== undefined) {
+        const pct = total > 0 ? Math.min(100, Math.round((processed / total) * 100)) : 100;
+        document.getElementById("progFractionBadge").textContent = `${processed} / ${total}`;
+        document.getElementById("progBarFill").style.width = `${Math.max(4, pct)}%`;
+        document.getElementById("progPercentText").textContent = `%${pct}`;
+      }
+      if (m1Val !== undefined) document.getElementById("progMetric1Val").textContent = String(m1Val);
+      if (m2Val !== undefined) document.getElementById("progMetric2Val").textContent = String(m2Val);
+      if (m3Val !== undefined) document.getElementById("progMetric3Val").textContent = String(m3Val);
+      if (m4Val !== undefined) document.getElementById("progMetric4Val").textContent = String(m4Val);
+    }
+
+    function appendProgressLog(text, color = "#e2e8f0") {
+      const box = document.getElementById("progLogBox");
+      const div = document.createElement("div");
+      div.className = "prog-log-item";
+      div.style.color = color;
+      div.textContent = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function finishProgressModal({ title, subtitle, hasError = false, autoCloseMs = 0 }) {
+      document.getElementById("progSpinner").style.display = "none";
+      const iconEl = document.getElementById("progStatusIcon");
+      iconEl.style.display = "inline-flex";
+      iconEl.className = `prog-status-icon ${hasError ? "err" : "ok"}`;
+      iconEl.textContent = hasError ? "!" : "✓";
+
+      if (title) document.getElementById("progTitle").textContent = title;
+      if (subtitle) document.getElementById("progSubtitle").textContent = subtitle;
+      document.getElementById("progBarFill").style.width = "100%";
+      document.getElementById("progPercentText").textContent = "%100";
+      document.getElementById("progStatusHint").textContent = hasError ? "İşlem uyarı/hata ile tamamlandı" : "İşlem başarıyla tamamlandı";
+      document.getElementById("progFooterNote").textContent = "Rakamsal işlem özeti yukarıda listelenmiştir.";
+
+      const closeBtn = document.getElementById("progCloseBtn");
+      closeBtn.disabled = false;
+      closeBtn.textContent = "Tamam / Kapat";
+
+      if (autoCloseMs > 0 && !hasError) {
+        setTimeout(() => {
+          closeProgressModal();
+        }, autoCloseMs);
+      }
+    }
+
+    function closeProgressModal() {
+      document.getElementById("progressModal").classList.remove("show");
+    }
+
+    // --- Tüm Verileri Çağır ve Karşılaştır ---
+    async function fetchAllStagedData(preserveBanner = false) {
+      const seq = ++fetchReqSeq;
+      const btn = document.getElementById("btnFetchAll");
+      btn.disabled = true;
+      btn.textContent = "Kolay İK ve DİA Karşılaştırılıyor...";
+      if (!preserveBanner) {
+        showBanner("Kolay İK ve DİA ERP verileri çekiliyor ve şema karşılaştırması yapılıyor...", "info");
+      }
+
+      const startDate = document.getElementById("startDate").value;
+      const endDate = document.getElementById("endDate").value;
+
+      if (!preserveBanner) {
+        openProgressModal({
+          title: "Kolay İK & DİA ERP Verileri Sorgulanıyor...",
+          subtitle: "Adım 1 / 2: Kolay İK personel özlük kartları ve DİA personel kayıtları alınıyor...",
+          m1Label: "KOLAY İK PERSONEL",
+          m2Label: "DİA MEVCUT KART",
+          m3Label: "İZİN / MESAİ / AVANS",
+          m4Label: "HAZIR PUANTAJ",
+          total: 2,
+        });
+        appendProgressLog(`▶ [Adım 1/2] Kolay İK v2 personel özlük kartları ve DİA per_personel_listele sorgulanıyor...`);
+      }
+
+      try {
+        const empRes = await fetch("/api/employees/stage?force=true");
+        if (seq !== fetchReqSeq) return;
+        if (!empRes.ok) throw new Error((await empRes.json()).detail || "Personel verisi alınamadı");
+        const empJson = await empRes.json();
+
+        employeesData = empJson.rows || [];
+        if (Array.isArray(empJson.sgk_exit_reasons) && empJson.sgk_exit_reasons.length) {
+          sgkExitReasons = empJson.sgk_exit_reasons;
+        }
+        selectedEmpIds.clear();
+        employeesData.forEach(r => {
+          if (r.sync_status === "NEEDS_UPDATE") selectedEmpIds.add(r.kolayik_id);
+        });
+        document.getElementById("kpiEmpTotal").textContent = empJson.summary.total_kolayik;
+        document.getElementById("kpiEmpDia").textContent = empJson.summary.total_dia;
+        document.getElementById("kpiEmpNew").textContent = empJson.summary.new_in_kolayik;
+        document.getElementById("kpiEmpUpdate").textContent = empJson.summary.needs_update;
+        const exitActionable = Number(empJson.summary.entry_exit_actionable || 0);
+        const passiveTotal = Number(empJson.summary.passive_in_kolayik || 0);
+        document.getElementById("kpiEmpExitDiff").textContent = exitActionable;
+        document.getElementById("kpiEmpExitSub").textContent = `Kolay İK Ayrılan (P): ${passiveTotal} kayıt`;
+        document.getElementById("exitDiffCount").textContent = exitActionable > 0 ? exitActionable : passiveTotal;
+        document.getElementById("cntEmployees").textContent = employeesData.length;
+        renderEmployeesTable();
+
+        if (!preserveBanner) {
+          updateProgressModal({
+            subtitle: `Adım 2 / 2: ${startDate} – ${endDate} dönemi PDKS mesai, izin, avans ve puantaj verileri alınıyor...`,
+            processed: 1,
+            total: 2,
+            m1Val: empJson.summary.total_kolayik,
+            m2Val: empJson.summary.total_dia,
+            m3Val: "...",
+            m4Val: "...",
+          });
+          appendProgressLog(
+            `✓ ${empJson.summary.total_kolayik} Kolay İK personeli alındı | DİA mevcut: ${empJson.summary.total_dia} | Yeni: ${empJson.summary.new_in_kolayik} | Güncellenecek: ${empJson.summary.needs_update}`,
+            "#4ade80"
+          );
+          appendProgressLog(`▶ [Adım 2/2] ${startDate} – ${endDate} dönemi PDKS, İzin, Avans ve DİA Puantaj kayıtları sorgulanıyor...`);
+        }
+
+        const periodRes = await fetch("/api/period/stage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ start_date: startDate, end_date: endDate }),
+        });
+        if (seq !== fetchReqSeq) return;
+        if (!periodRes.ok) throw new Error((await periodRes.json()).detail || "Dönem verisi alınamadı");
+        const periodJson = await periodRes.json();
+
+        // 2. PDKS
+        pdksData = periodJson.pdks_rows || [];
+        document.getElementById("cntPdks").textContent = pdksData.length;
+        renderPdksTable();
+
+        // 3. İzinler
+        leavesData = periodJson.leave_rows || [];
+        selectedLeaveIds.clear();
+        document.getElementById("cntLeaves").textContent = leavesData.length;
+        renderLeavesTable();
+
+        // 4. Avans / Ek Ödeme
+        transactionsData = periodJson.transaction_rows || [];
+        selectedTrIds.clear();
+        transactionsData.forEach(t => {
+          if (t.durum === "approved") selectedTrIds.add(t.transaction_id);
+        });
+        document.getElementById("cntTransactions").textContent = transactionsData.length;
+        renderTransactionsTable();
+
+        // 5. Puantaj ve Mahsup
+        puantajData = periodJson.puantaj_rows || [];
+        selectedPuantajIds.clear();
+        puantajData.forEach(p => {
+          if (p.in_dia) selectedPuantajIds.add(p.kolayik_person_id);
+        });
+        document.getElementById("cntPayroll").textContent = puantajData.length;
+        renderPuantajTable();
+
+        mahsupData = periodJson.mahsup_preview || { tarih: endDate, fisno: "", aciklama: "", lines: [] };
+        document.getElementById("mahsupFisNo").value = mahsupData.fisno || "";
+        document.getElementById("mahsupTarih").value = mahsupData.tarih || endDate;
+        document.getElementById("mahsupAciklama").value = mahsupData.aciklama || "";
+        renderMahsupTable();
+
+        if (!preserveBanner) {
+          const totalPeriodItems = pdksData.length + leavesData.length + transactionsData.length;
+          updateProgressModal({
+            processed: 2,
+            total: 2,
+            m1Val: empJson.summary.total_kolayik,
+            m2Val: empJson.summary.total_dia,
+            m3Val: `${leavesData.length} / ${pdksData.length} / ${transactionsData.length}`,
+            m4Val: puantajData.length,
+          });
+          appendProgressLog(
+            `✓ Dönem verileri alındı: ${leavesData.length} İzin/Rapor, ${pdksData.length} PDKS Fazla Mesai, ${transactionsData.length} Avans/Ödeme, ${puantajData.length} Aylık Puantaj satırı hazırlandı.`,
+            "#4ade80"
+          );
+          finishProgressModal({
+            title: "Sorgulama ve Karşılaştırma Tamamlandı",
+            subtitle: `Toplam ${empJson.summary.total_kolayik} personel ve ${totalPeriodItems} dönem hareketi başarıyla alındı.`,
+            hasError: false,
+            autoCloseMs: 900,
+          });
+          showBanner(
+            `Sorgulama tamamlandı: ${empJson.summary.total_kolayik} personel alındı (${empJson.summary.new_in_kolayik} yeni, ${empJson.summary.needs_update} güncellenecek), ${pdksData.length} PDKS mesai, ${leavesData.length} izin ve ${transactionsData.length} avans hareketi hazırlandı.`,
+            "success"
+          );
+        }
+      } catch (err) {
+        if (!preserveBanner) {
+          appendProgressLog(`✕ Hata: ${err.message}`, "#f87171");
+          finishProgressModal({
+            title: "Sorgulama Sırasında Hata Oluştu",
+            subtitle: err.message,
+            hasError: true,
+          });
+        }
+        showBanner(`Hata: ${err.message}`, "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Kolay İK'dan Verileri Çağır & DİA İle Karşılaştır";
+      }
+    }
+
+    // --- 1. PERSONEL TABLOSU ---
+    function getFilteredEmployees() {
+      const q = normTR(document.getElementById("empSearch").value);
+      const flt = document.getElementById("empFilter").value;
+      return employeesData.filter(r => {
+        if (flt === "ACTIONABLE" && r.sync_status === "SYNCED") return false;
+        if (flt === "ENTRY_EXIT_DIFF" && !r.has_entry_exit_diff) return false;
+        if (flt === "NEW_IN_KOLAYIK" && r.sync_status !== "NEW_IN_KOLAYIK") return false;
+        if (flt === "NEEDS_UPDATE" && r.sync_status !== "NEEDS_UPDATE") return false;
+        if (flt === "ACTIVE" && r.durum !== "A") return false;
+        if (flt === "PASSIVE" && r.durum !== "P" && !r.istenayrilmatarihi) return false;
+        if (q) {
+          const hay = normTR(`${r.sicilno} ${r.adi} ${r.soyadi} ${r.tckimlikno} ${r.departman} ${r.gorevi}`);
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderEmployeesTable() {
+      const tbody = document.getElementById("empTableBody");
+      const list = getFilteredEmployees();
+      document.getElementById("selEmpCount").textContent = selectedEmpIds.size;
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="13" style="text-align:center; padding:24px; color:var(--text-muted);">Kriterlere uygun personel bulunamadı.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(r => {
+        const checked = selectedEmpIds.has(r.kolayik_id) ? "checked" : "";
+        let statusBadge = "";
+        if (r.sync_status === "NEW_IN_KOLAYIK") {
+          statusBadge = `<span class="badge badge-new">DİA'da Yok (Yeni Giriş)</span>`;
+        } else if (r.has_exit_diff) {
+          statusBadge = `<span class="badge badge-danger">İşten Çıkış Eşitlenecek</span>`;
+        } else if (r.has_entry_diff) {
+          statusBadge = `<span class="badge badge-update">İşe Giriş Güncellenecek</span>`;
+        } else if (r.sync_status === "NEEDS_UPDATE") {
+          statusBadge = `<span class="badge badge-update">Fark Var (Güncelle)</span>`;
+        } else if (r.durum === "P") {
+          statusBadge = `<span class="badge badge-synced">DİA ile Eşleşti (Ayrıldı)</span>`;
+        } else {
+          statusBadge = `<span class="badge badge-synced">DİA ile Eşleşti</span>`;
+        }
+
+        const diffHtml = (r.diffs || [])
+          .map(d => `<span class="diff-chip" title="DİA: ${escHtml(d.dia)} -> Kolay İK: ${escHtml(d.kolay)}">${escHtml(d.label)}: ${escHtml(d.dia)} → <b>${escHtml(d.kolay)}</b></span>`)
+          .join("");
+
+        const isPassive = r.durum === "P" || Boolean(r.istenayrilmatarihi);
+        const curIan = String(r.ian_kodu || "").trim().padStart(2, "0");
+        const ianSelectHtml = isPassive
+          ? `<div style="margin-top:4px;">
+              <select class="cell-input" style="border-color:${r.ian_kodu ? 'var(--border-strong)' : 'var(--danger)'}; background:#fff; font-size:11px;"
+                onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'ian_kodu', this.value)">
+                <option value="">-- SGK Çıkış Nedeni Seçin (Zorunlu) --</option>
+                ${sgkExitReasons.map(opt => `<option value="${escHtml(opt.code)}" ${curIan === opt.code ? 'selected' : ''}>${escHtml(opt.name)}</option>`).join("")}
+              </select>
+            </div>`
+          : "";
+
+        return `
+          <tr class="${checked ? 'selected-row' : ''}">
+            <td><input type="checkbox" ${checked} onchange="toggleEmpRow('${escHtml(r.kolayik_id)}', this.checked)" /></td>
+            <td><div>${statusBadge}</div>${diffHtml ? `<div style="margin-top:3px;">${diffHtml}</div>` : ""}</td>
+            <td><input class="cell-input num" value="${escHtml(r.sicilno || '')}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'sicilno', this.value)" /></td>
+            <td><input class="cell-input" value="${escHtml(r.adi || '')}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'adi', this.value)" /></td>
+            <td><input class="cell-input" value="${escHtml(r.soyadi || '')}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'soyadi', this.value)" /></td>
+            <td><input class="cell-input num" value="${escHtml(r.tckimlikno || '')}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'tckimlikno', this.value)" /></td>
+            <td>
+              <select class="cell-input" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'durum', this.value)">
+                <option value="A" ${r.durum === 'A' ? 'selected' : ''}>A - Aktif</option>
+                <option value="P" ${r.durum === 'P' ? 'selected' : ''}>P - Ayrıldı</option>
+              </select>
+            </td>
+            <td><input type="date" class="cell-input" value="${escHtml(r.isebaslamatarihi || '')}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'isebaslamatarihi', this.value)" /></td>
+            <td>
+              <input type="date" class="cell-input" value="${escHtml(r.istenayrilmatarihi || '')}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'istenayrilmatarihi', this.value)" />
+              ${ianSelectHtml}
+            </td>
+            <td>
+              <div style="font-size:11px; color:var(--text-muted);">${escHtml(r.departman || '-')}</div>
+              <input class="cell-input" value="${escHtml(r.gorevi || '')}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'gorevi', this.value)" />
+            </td>
+            <td>
+              <select class="cell-input" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'maliyet_profili', this.value)">
+                <option value="GENEL" ${r.maliyet_profili === 'GENEL' ? 'selected' : ''}>770.002 Genel Personel</option>
+                <option value="PAZARLAMA_DEPO" ${r.maliyet_profili === 'PAZARLAMA_DEPO' ? 'selected' : ''}>760.001 Pazarlama/Depo</option>
+                <option value="MUDUR" ${r.maliyet_profili === 'MUDUR' ? 'selected' : ''}>770.001 Müdür</option>
+              </select>
+            </td>
+            <td>
+              <select class="cell-input" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'ucretturu', this.value)">
+                <option value="N" ${r.ucretturu === 'N' ? 'selected' : ''}>Net (N)</option>
+                <option value="B" ${r.ucretturu === 'B' ? 'selected' : ''}>Brüt (B)</option>
+              </select>
+            </td>
+            <td><input type="number" step="0.01" class="cell-input cell-num" value="${Number(r.maas || 0)}" onchange="updateEmpField('${escHtml(r.kolayik_id)}', 'maas', parseFloat(this.value || 0))" /></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function updateEmpField(id, field, val) {
+      const row = employeesData.find(x => x.kolayik_id === id);
+      if (row) {
+        row[field] = val;
+        if (field === "istenayrilmatarihi" && val) {
+          row.durum = "P";
+          row.has_exit_diff = true;
+          row.has_entry_exit_diff = true;
+        } else if (field === "durum" && val === "A") {
+          row.istenayrilmatarihi = "";
+        } else if (field === "durum" && val === "P") {
+          row.has_exit_diff = true;
+          row.has_entry_exit_diff = true;
+        }
+        selectedEmpIds.add(id);
+        renderEmployeesTable();
+      }
+    }
+
+    function toggleEmpRow(id, checked) {
+      if (checked) selectedEmpIds.add(id);
+      else selectedEmpIds.delete(id);
+      renderEmployeesTable();
+    }
+
+    function toggleAllEmployees(checked) {
+      const list = getFilteredEmployees();
+      list.forEach(r => {
+        if (checked) selectedEmpIds.add(r.kolayik_id);
+        else selectedEmpIds.delete(r.kolayik_id);
+      });
+      renderEmployeesTable();
+    }
+
+    function selectEmployeesByFilter(statusType) {
+      selectedEmpIds.clear();
+      employeesData.forEach(r => {
+        if (r.sync_status === statusType) selectedEmpIds.add(r.kolayik_id);
+      });
+      renderEmployeesTable();
+    }
+
+    async function syncEntryExitEmployees() {
+      const btn = document.getElementById("btnSyncTerminated");
+      btn.disabled = true;
+      showBanner("Kolay İK ve DİA arasındaki işten çıkış / işe giriş durumları kontrol ediliyor...", "info");
+
+      openProgressModal({
+        title: "İşten Çıkanlar & Giriş-Çıkışlar Kontrol Ediliyor...",
+        subtitle: "Kolay İK v2 personel durumları (Aktif/Pasif, İşe Giriş ve İşten Çıkış Tarihleri) DİA ile karşılaştırılıyor...",
+        m1Label: "KOLAY İK PERSONEL",
+        m2Label: "DİA MEVCUT KART",
+        m3Label: "İŞTEN AYRILAN (P)",
+        m4Label: "GİRİŞ/ÇIKIŞ FARKI",
+        total: 1,
+      });
+      appendProgressLog("▶ Kolay İK ve DİA ERP personel giriş/çıkış durumları canlı sorgulanıyor...");
+
+      try {
+        const empRes = await fetch("/api/employees/stage?force=true");
+        if (!empRes.ok) throw new Error((await empRes.json()).detail || "Personel verisi alınamadı");
+        const empJson = await empRes.json();
+
+        employeesData = empJson.rows || [];
+        const exitActionable = Number(empJson.summary.entry_exit_actionable || 0);
+        const passiveTotal = Number(empJson.summary.passive_in_kolayik || 0);
+
+        document.getElementById("kpiEmpTotal").textContent = empJson.summary.total_kolayik;
+        document.getElementById("kpiEmpDia").textContent = empJson.summary.total_dia;
+        document.getElementById("kpiEmpNew").textContent = empJson.summary.new_in_kolayik;
+        document.getElementById("kpiEmpUpdate").textContent = empJson.summary.needs_update;
+        document.getElementById("kpiEmpExitDiff").textContent = exitActionable;
+        document.getElementById("kpiEmpExitSub").textContent = `Kolay İK Ayrılan (P): ${passiveTotal} kayıt`;
+        document.getElementById("exitDiffCount").textContent = exitActionable > 0 ? exitActionable : passiveTotal;
+        document.getElementById("cntEmployees").textContent = employeesData.length;
+
+        updateProgressModal({
+          processed: 1,
+          total: 1,
+          m1Val: empJson.summary.total_kolayik,
+          m2Val: empJson.summary.total_dia,
+          m3Val: passiveTotal,
+          m4Val: exitActionable,
+        });
+
+        const diffRows = employeesData.filter(r => r.has_entry_exit_diff);
+        const passiveRows = employeesData.filter(r => r.durum === "P" || Boolean(r.istenayrilmatarihi));
+
+        if (diffRows.length > 0) {
+          const exitDiffList = diffRows.filter(r => r.has_exit_diff);
+          const entryDiffList = diffRows.filter(r => r.has_entry_diff && !r.has_exit_diff);
+
+          appendProgressLog(
+            `✓ Kontrol tamamlandı: ${exitDiffList.length} işten çıkış farkı, ${entryDiffList.length} işe giriş farkı tespit edildi.`,
+            "#fbbf24"
+          );
+          finishProgressModal({
+            title: "Giriş / Çıkış Farkı Tespit Edildi",
+            subtitle: `DİA ile eşitlenecek ${diffRows.length} personel bulundu (${exitDiffList.length} işten çıkış, ${entryDiffList.length} yeni/giriş).`,
+            hasError: false,
+            autoCloseMs: 600,
+          });
+
+          document.getElementById("empFilter").value = "ENTRY_EXIT_DIFF";
+          selectedEmpIds.clear();
+          diffRows.forEach(r => selectedEmpIds.add(r.kolayik_id));
+          renderEmployeesTable();
+
+          const namesPreview = diffRows
+            .slice(0, 8)
+            .map(r => `• ${r.ad_soyad} (${r.durum === 'P' ? 'Çıkış: ' + (r.istenayrilmatarihi || 'Pasif') : 'Giriş: ' + (r.isebaslamatarihi || 'Yeni')})`)
+            .join("\n");
+
+          await new Promise(r => setTimeout(r, 650));
+          if (
+            confirm(
+              `Kolay İK ↔ DİA Giriş/Çıkış Kontrolü:\n\n` +
+              `• İşten Çıkan / Çıkış Tarihi Güncellenecek: ${exitDiffList.length} personel\n` +
+              `• Yeni İşe Başlayan / Giriş Tarihi Güncellenecek: ${entryDiffList.length} personel\n\n` +
+              `${namesPreview}${diffRows.length > 8 ? '\n...ve ' + (diffRows.length - 8) + ' personel daha' : ''}\n\n` +
+              `Bu ${diffRows.length} personelin giriş/çıkış durumunu şimdi DİA ERP'de eşitlemek istiyor musunuz?`
+            )
+          ) {
+            await pushSelectedEmployees(true);
+          }
+        } else {
+          appendProgressLog(
+            `✓ Kontrol tamamlandı: Kolay İK'daki ${passiveRows.length} işten ayrılan (Pasif) ve tüm aktif personeller DİA ERP ile birebir eşleşmektedir.`,
+            "#4ade80"
+          );
+          finishProgressModal({
+            title: "Tüm Giriş ve Çıkışlar DİA İle Eşit",
+            subtitle: `Kolay İK'daki ${passiveRows.length} işten ayrılan (Pasif) personel DİA ERP'de de eksiksiz olarak işten ayrılmış görünmektedir.`,
+            hasError: false,
+            autoCloseMs: 900,
+          });
+
+          document.getElementById("empFilter").value = "PASSIVE";
+          selectedEmpIds.clear();
+          passiveRows.forEach(r => selectedEmpIds.add(r.kolayik_id));
+          renderEmployeesTable();
+
+          await new Promise(r => setTimeout(r, 950));
+          if (
+            passiveRows.length > 0 &&
+            confirm(
+              `Giriş / Çıkış Kontrolü Tamamlandı:\n\n` +
+              `Kolay İK'da işten ayrılmış (${passiveRows.length} Pasif) ve aktif çalışan personellerin tamamı DİA ERP ile birebir eşleşmektedir (fark: 0).\n\n` +
+              `Tabloda listelenen ${passiveRows.length} işten ayrılmış (Pasif) personelin çıkış tarihi ve SGK ayrılma nedenlerini DİA ERP'de tekrar güncellemek / doğrulamak ister misiniz?`
+            )
+          ) {
+            await pushSelectedEmployees(true);
+          } else {
+            showBanner(
+              `Giriş/Çıkış kontrolü tamamlandı: ${passiveRows.length} işten ayrılan (P) personelin tamamı DİA ile eşleşmektedir.`,
+              "success"
+            );
+          }
+        }
+      } catch (err) {
+        appendProgressLog(`✕ Hata: ${err.message}`, "#f87171");
+        finishProgressModal({
+          title: "Giriş / Çıkış Kontrolü Hatası",
+          subtitle: err.message,
+          hasError: true,
+        });
+        showBanner(`Hata: ${err.message}`, "error");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function pushSelectedEmployees(skipConfirm = false) {
+      const selected = employeesData.filter(r => selectedEmpIds.has(r.kolayik_id));
+      if (!selected.length) {
+        showBanner("Lütfen DİA'ya aktarılacak en az 1 personel seçin.", "error");
+        return;
+      }
+
+      // K8 / A3: İşten ayrılmış (Pasif) personellerde SGK Çıkış Nedeni zorunlu kontrolü
+      const missingIan = selected.filter(r => (r.durum === "P" || Boolean(r.istenayrilmatarihi)) && !String(r.ian_kodu || "").trim());
+      if (missingIan.length > 0) {
+        const names = missingIan.map(x => `${x.adi} ${x.soyadi}`.trim()).join(", ");
+        showBanner(`İşten ayrılmış personel(ler) için SGK Çıkış Nedeni seçilmelidir: ${names}`, "error");
+        return;
+      }
+
+      if (!skipConfirm && !confirm(`Seçilen ${selected.length} personel kartı DİA Cloud ERP'ye aktarılacak/güncellenecek. Onaylıyor musunuz?`)) return;
+
+      const btn = document.getElementById("btnPushEmployees");
+      btn.disabled = true;
+      showBanner(`${selected.length} personel DİA ERP'ye aktarılıyor...`, "info");
+
+      const total = selected.length;
+      const batchSize = 5;
+      let processed = 0;
+      let totalAdded = 0;
+      let totalUpdated = 0;
+      let totalErrors = 0;
+      const allErrorMsgs = [];
+
+      openProgressModal({
+        title: "Personel Kartları DİA ERP'ye Aktarılıyor...",
+        subtitle: `Toplam ${total} personel kartı DİA ERP servisine gönderiliyor...`,
+        m1Label: "SEÇİLEN PERSONEL",
+        m2Label: "AKTARILAN / İŞLENEN",
+        m3Label: "EKLENEN / GÜNCELLENEN",
+        m4Label: "HATALI KAYIT",
+        total,
+      });
+
+      try {
+        for (let i = 0; i < total; i += batchSize) {
+          const chunk = selected.slice(i, i + batchSize);
+          updateProgressModal({
+            subtitle: `${i + 1} – ${Math.min(i + batchSize, total)} / ${total} arası personel kartları DİA'ya yazılıyor...`,
+            processed,
+            total,
+          });
+
+          const res = await fetch("/api/employees/push", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ rows: chunk }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.detail || "Aktarım hatası");
+
+          processed += chunk.length;
+          totalAdded += Number(data.added || 0);
+          totalUpdated += Number(data.updated || 0);
+          totalErrors += Number(data.errors || 0);
+
+          (data.results || []).forEach(item => {
+            if (item.status === "ERROR") {
+              allErrorMsgs.push(`${item.ad_soyad}: ${item.message}`);
+              appendProgressLog(`✕ [${item.sicilno || "-"}] ${item.ad_soyad} -> HATA: ${item.message}`, "#f87171");
+            } else {
+              const actLabel = item.action === "ADDED" ? "Yeni Eklendi" : "Güncellendi";
+              appendProgressLog(`✓ [${item.sicilno}] ${item.ad_soyad} -> DİA'ya ${actLabel}`, "#4ade80");
+            }
+          });
+
+          updateProgressModal({
+            subtitle: `${processed} / ${total} personel işlendi (${totalAdded} yeni eklendi, ${totalUpdated} güncellendi)`,
+            processed,
+            total,
+            m1Val: total,
+            m2Val: `${processed} / ${total}`,
+            m3Val: `${totalAdded} / ${totalUpdated}`,
+            m4Val: totalErrors,
+          });
+        }
+
+        finishProgressModal({
+          title: "Personel Aktarımı Tamamlandı",
+          subtitle: `Toplam ${total} personelden ${totalAdded} yeni eklendi, ${totalUpdated} güncellendi, ${totalErrors} hata oluştu.`,
+          hasError: totalErrors > 0,
+        });
+
+        showBanner(
+          `Personel aktarımı tamamlandı: ${totalAdded} yeni eklendi, ${totalUpdated} güncellendi, ${totalErrors} hata. ${allErrorMsgs.slice(0, 3).join(" | ")}`,
+          totalErrors > 0 ? "error" : "success"
+        );
+        await fetchAllStagedData(true);
+        await loadHealth();
+      } catch (e) {
+        appendProgressLog(`✕ Kritik Hata: ${e.message}`, "#f87171");
+        finishProgressModal({
+          title: "Personel Aktarımı Durduruldu",
+          subtitle: e.message,
+          hasError: true,
+        });
+        showBanner(`Hata: ${e.message}`, "error");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // --- 2. PDKS & FAZLA MESAİ TABLOSU ---
+    function renderPdksTable() {
+      const tbody = document.getElementById("pdksTableBody");
+      const q = normTR(document.getElementById("pdksSearch").value);
+      const list = pdksData.filter(r => !q || normTR(`${r.ad_soyad} ${r.departman} ${r.aciklama}`).includes(q));
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:var(--text-muted);">Seçili tarih aralığında onaylı PDKS fazla mesai kaydı bulunamadı.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(r => `
+        <tr>
+          <td class="num">${r.in_dia ? escHtml(r.sicilno) : `<span class="badge badge-new">DİA'da Yok</span>`}</td>
+          <td style="font-weight:600;">${escHtml(r.ad_soyad)}</td>
+          <td>${escHtml(r.departman || '-')}</td>
+          <td class="num">${escHtml(r.baslangic)}</td>
+          <td class="num">${escHtml(r.bitis)}</td>
+          <td class="num" style="text-align:right;">${Number(r.dakika || 0)} dk</td>
+          <td>
+            <input type="number" step="0.25" class="cell-input cell-num" value="${Number(r.saat || 0)}"
+              onchange="updatePdksRow('${escHtml(r.timelog_id)}', 'saat', parseFloat(this.value || 0))" />
+          </td>
+          <td>
+            <select class="cell-input" onchange="updatePdksRow('${escHtml(r.timelog_id)}', 'hedef_dia_alani', this.value)">
+              <option value="fazlamesai1saat" ${r.hedef_dia_alani === 'fazlamesai1saat' ? 'selected' : ''}>Hafta İçi Fazla Mesai</option>
+              <option value="haftasonumesaisisaat" ${r.hedef_dia_alani === 'haftasonumesaisisaat' ? 'selected' : ''}>Hafta Sonu Mesaisi</option>
+              <option value="resmitatilmesaisisaat" ${r.hedef_dia_alani === 'resmitatilmesaisisaat' ? 'selected' : ''}>Resmi Tatil Mesaisi</option>
+            </select>
+          </td>
+          <td style="color:var(--text-secondary);">${escHtml(r.aciklama || '')}</td>
+        </tr>
+      `).join("");
+    }
+
+    function updatePdksRow(timelogId, field, val) {
+      const r = pdksData.find(x => x.timelog_id === timelogId);
+      if (r) r[field] = val;
+    }
+
+    function recalculatePuantajFromPdks() {
+      const byPerson = {};
+      pdksData.forEach(r => {
+        const pid = r.kolayik_person_id;
+        if (!byPerson[pid]) {
+          byPerson[pid] = { fazlamesai1saat: 0, haftasonumesaisisaat: 0, resmitatilmesaisisaat: 0 };
+        }
+        byPerson[pid][r.hedef_dia_alani] = Number((byPerson[pid][r.hedef_dia_alani] + Number(r.saat || 0)).toFixed(2));
+      });
+      puantajData.forEach(p => {
+        const ot = byPerson[p.kolayik_person_id] || { fazlamesai1saat: 0, haftasonumesaisisaat: 0, resmitatilmesaisisaat: 0 };
+        p.fazlamesai1saat = ot.fazlamesai1saat;
+        p.haftasonumesaisisaat = ot.haftasonumesaisisaat;
+        p.resmitatilmesaisisaat = ot.resmitatilmesaisisaat;
+      });
+      renderPuantajTable();
+      switchTab("tab-payroll");
+      showBanner("PDKS fazla mesai saatleri Aylık Puantaj tablosuna başarıyla yansıtıldı.", "success");
+    }
+
+    // --- 3. İZİN VE RAPORLAR TABLOSU (K4 / A2: Yıllık İzin Bakiye Korumalı) ---
+    function renderLeavesTable() {
+      const tbody = document.getElementById("leavesTableBody");
+      const q = normTR(document.getElementById("leaveSearch").value);
+      const list = leavesData.filter(r => !q || normTR(`${r.ad_soyad} ${r.izin_turu} ${r.aciklama}`).includes(q));
+      document.getElementById("selLeaveCount").textContent = selectedLeaveIds.size;
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:24px; color:var(--text-muted);">Seçili tarih aralığında onaylı izin kaydı bulunamadı.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(r => {
+        const canPushIzinMod = Boolean(r.can_push_dia_izin);
+        const checked = selectedLeaveIds.has(r.leave_id) ? "checked" : "";
+        const disabledAttr = !canPushIzinMod || r.already_in_dia ? "disabled" : "";
+
+        let statusBadge = "";
+        if (!canPushIzinMod) {
+          statusBadge = `<span class="badge badge-new" title="Yıllık izin bakiyesini düşmemesi için yalnız Aylık Puantaja yansır">Sadece Puantaja Yansır</span>`;
+        } else if (r.already_in_dia) {
+          statusBadge = `<span class="badge badge-synced">DİA'da Kayıtlı</span>`;
+        } else if (r.in_dia) {
+          statusBadge = `<span class="badge badge-update">Yıllık İzin Aktarıma Hazır</span>`;
+        } else {
+          statusBadge = `<span class="badge badge-new">Personel DİA'da Yok</span>`;
+        }
+
+        return `
+          <tr class="${checked ? 'selected-row' : ''}">
+            <td><input type="checkbox" ${checked} ${disabledAttr} onchange="toggleLeaveRow('${escHtml(r.leave_id)}', this.checked)" /></td>
+            <td>${statusBadge}</td>
+            <td class="num">${escHtml(r.sicilno)}</td>
+            <td style="font-weight:600;">${escHtml(r.ad_soyad)}</td>
+            <td>${escHtml(r.izin_turu)}</td>
+            <td>${r.ucretli_mi ? '<span class="badge badge-synced">Ücretli</span>' : '<span class="badge badge-danger">Ücretsiz</span>'}</td>
+            <td><input type="date" class="cell-input" value="${escHtml(r.baslangictarihi)}" onchange="updateLeaveField('${escHtml(r.leave_id)}', 'baslangictarihi', this.value)" /></td>
+            <td><input type="date" class="cell-input" value="${escHtml(r.bitistarihi)}" onchange="updateLeaveField('${escHtml(r.leave_id)}', 'bitistarihi', this.value)" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.izinligunsayisi || 0)}" onchange="updateLeaveField('${escHtml(r.leave_id)}', 'izinligunsayisi', parseFloat(this.value || 0))" /></td>
+            <td>
+              <select class="cell-input" onchange="updateLeaveField('${escHtml(r.leave_id)}', 'hedef_puantaj_alani', this.value)">
+                <option value="izinliucretligun" ${r.hedef_puantaj_alani === 'izinliucretligun' ? 'selected' : ''}>Ücretli İzin Günü</option>
+                <option value="izinliucretsizgun" ${r.hedef_puantaj_alani === 'izinliucretsizgun' ? 'selected' : ''}>Ücretsiz İzin Günü</option>
+                <option value="doktorraporugun" ${r.hedef_puantaj_alani === 'doktorraporugun' ? 'selected' : ''}>Doktor Raporu Günü</option>
+                <option value="uzaktancalismagunsayisi" ${r.hedef_puantaj_alani === 'uzaktancalismagunsayisi' ? 'selected' : ''}>Uzaktan Çalışma Günü</option>
+              </select>
+            </td>
+            <td><input class="cell-input" value="${escHtml(r.aciklama || '')}" onchange="updateLeaveField('${escHtml(r.leave_id)}', 'aciklama', this.value)" /></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function updateLeaveField(id, field, val) {
+      const r = leavesData.find(x => x.leave_id === id);
+      if (r) {
+        r[field] = val;
+        if (field === "hedef_puantaj_alani") {
+          r.can_push_dia_izin = (val === "izinliucretligun");
+          if (!r.can_push_dia_izin) selectedLeaveIds.delete(id);
+          renderLeavesTable();
+        }
+      }
+    }
+
+    function toggleLeaveRow(id, checked) {
+      const r = leavesData.find(x => x.leave_id === id);
+      if (r && !r.can_push_dia_izin) return;
+      if (checked) selectedLeaveIds.add(id);
+      else selectedLeaveIds.delete(id);
+      renderLeavesTable();
+    }
+
+    function toggleAllLeaves(checked) {
+      leavesData.forEach(r => {
+        if (checked && r.in_dia && !r.already_in_dia && r.can_push_dia_izin) selectedLeaveIds.add(r.leave_id);
+        else selectedLeaveIds.delete(r.leave_id);
+      });
+      renderLeavesTable();
+    }
+
+    function recalculatePuantajFromLeaves() {
+      const byPerson = {};
+      leavesData.forEach(r => {
+        const pid = r.kolayik_person_id;
+        if (!byPerson[pid]) {
+          byPerson[pid] = { izinliucretligun: 0, izinliucretsizgun: 0, doktorraporugun: 0, uzaktancalismagunsayisi: 0 };
+        }
+        byPerson[pid][r.hedef_puantaj_alani] = Number((byPerson[pid][r.hedef_puantaj_alani] + Number(r.izinligunsayisi || 0)).toFixed(2));
+      });
+      puantajData.forEach(p => {
+        const lv = byPerson[p.kolayik_person_id] || { izinliucretligun: 0, izinliucretsizgun: 0, doktorraporugun: 0, uzaktancalismagunsayisi: 0 };
+        p.izinliucretligun = lv.izinliucretligun;
+        p.izinliucretsizgun = lv.izinliucretsizgun;
+        p.doktorraporugun = lv.doktorraporugun;
+        p.uzaktancalismagunsayisi = lv.uzaktancalismagunsayisi;
+        recalcPuantajRowDays(p);
+      });
+      renderPuantajTable();
+      switchTab("tab-payroll");
+      showBanner("İzin ve rapor günleri Aylık Puantaj tablosuna başarıyla yansıtıldı.", "success");
+    }
+
+    async function pushSelectedLeaves() {
+      const selected = leavesData.filter(r => selectedLeaveIds.has(r.leave_id) && r.can_push_dia_izin);
+      if (!selected.length) {
+        showBanner("Lütfen DİA İzin Modülüne aktarılacak en az 1 Yıllık İzin kaydı seçin (Rapor ve ücretsiz izinler yalnızca puantaja yansıtılır).", "error");
+        return;
+      }
+      if (!confirm(`Seçilen ${selected.length} yıllık izin kaydı DİA İzin Planlama modülüne aktarılacak. Onaylıyor musunuz?`)) return;
+
+      const total = selected.length;
+      const batchSize = 5;
+      let processed = 0;
+      let totalAdded = 0;
+      let totalErrors = 0;
+
+      openProgressModal({
+        title: "Yıllık İzinler DİA ERP'ye Aktarılıyor...",
+        subtitle: `Toplam ${total} yıllık izin kaydı DİA ERP servisine gönderiliyor...`,
+        m1Label: "SEÇİLEN İZİN",
+        m2Label: "AKTARILAN / İŞLENEN",
+        m3Label: "BAŞARILI EKLENEN",
+        m4Label: "HATALI KAYIT",
+        total,
+      });
+
+      try {
+        for (let i = 0; i < total; i += batchSize) {
+          const chunk = selected.slice(i, i + batchSize);
+          const res = await fetch("/api/leaves/push", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ rows: chunk }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.detail || "İzin aktarım hatası");
+
+          processed += chunk.length;
+          totalAdded += Number(data.added || 0);
+          totalErrors += Number(data.errors || 0);
+
+          (data.results || []).forEach(item => {
+            if (item.status === "ERROR") {
+              appendProgressLog(`✕ ${item.ad_soyad} -> HATA: ${item.message}`, "#f87171");
+            } else {
+              appendProgressLog(`✓ ${item.ad_soyad} (${item.baslangictarihi} / ${item.izinligunsayisi} gün) DİA'ya aktarıldı`, "#4ade80");
+            }
+          });
+
+          updateProgressModal({
+            subtitle: `${processed} / ${total} izin kaydı işlendi (${totalAdded} başarılı)`,
+            processed,
+            total,
+            m1Val: total,
+            m2Val: `${processed} / ${total}`,
+            m3Val: totalAdded,
+            m4Val: totalErrors,
+          });
+        }
+
+        finishProgressModal({
+          title: "Yıllık İzin Aktarımı Tamamlandı",
+          subtitle: `Toplam ${total} izin kaydından ${totalAdded} tanesi DİA'ya eklendi, ${totalErrors} hata oluştu.`,
+          hasError: totalErrors > 0,
+        });
+        showBanner(`İzin aktarımı tamamlandı: ${totalAdded} eklendi, ${totalErrors} hata.`, totalErrors ? "error" : "success");
+        await fetchAllStagedData(true);
+      } catch (e) {
+        appendProgressLog(`✕ Hata: ${e.message}`, "#f87171");
+        finishProgressModal({ title: "İzin Aktarım Hatası", subtitle: e.message, hasError: true });
+        showBanner(`Hata: ${e.message}`, "error");
+      }
+    }
+
+    // --- 4. AVANS / EK ÖDEME TABLOSU (A4: Kesinti / Kazanç Yön Seçimli) ---
+    function renderTransactionsTable() {
+      const tbody = document.getElementById("trTableBody");
+      document.getElementById("selTrCount").textContent = selectedTrIds.size;
+
+      if (!transactionsData.length) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:24px; color:var(--text-muted);">Seçili tarih aralığında avans/ek ödeme hareketi bulunamadı.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = transactionsData.map(r => {
+        const checked = selectedTrIds.has(r.transaction_id) ? "checked" : "";
+        const stBadge = r.durum === "approved"
+          ? `<span class="badge badge-synced">Onaylı</span>`
+          : `<span class="badge badge-danger">${escHtml(r.durum)}</span>`;
+        const yon = r.islem_yonu || "KESINTI";
+
+        return `
+          <tr class="${checked ? 'selected-row' : ''}">
+            <td><input type="checkbox" ${checked} onchange="toggleTrRow('${escHtml(r.transaction_id)}', this.checked)" /></td>
+            <td>${stBadge}</td>
+            <td class="num">${escHtml(r.sicilno)}</td>
+            <td style="font-weight:600;">${escHtml(r.ad_soyad)}</td>
+            <td><input type="date" class="cell-input" value="${escHtml(r.tarih)}" onchange="updateTrField('${escHtml(r.transaction_id)}', 'tarih', this.value)" /></td>
+            <td><span class="badge badge-update">${escHtml(r.tur)}</span></td>
+            <td>
+              <select class="cell-input" onchange="updateTrField('${escHtml(r.transaction_id)}', 'islem_yonu', this.value)">
+                <option value="KESINTI" ${yon === 'KESINTI' ? 'selected' : ''}>Avans / Kesinti (K - 196.001)</option>
+                <option value="KAZANC" ${yon === 'KAZANC' ? 'selected' : ''}>Prim / Ek Kazanç (E - 770.002)</option>
+              </select>
+            </td>
+            <td><input type="number" step="0.01" class="cell-input cell-num" value="${Number(r.tutar || 0)}" onchange="updateTrField('${escHtml(r.transaction_id)}', 'tutar', parseFloat(this.value || 0))" /></td>
+            <td><input class="cell-input num" value="${escHtml(r.borc_hesapkodu)}" onchange="updateTrField('${escHtml(r.transaction_id)}', 'borc_hesapkodu', this.value)" /></td>
+            <td><input class="cell-input num" value="${escHtml(r.alacak_hesapkodu)}" onchange="updateTrField('${escHtml(r.transaction_id)}', 'alacak_hesapkodu', this.value)" /></td>
+            <td><input class="cell-input" value="${escHtml(r.aciklama || '')}" onchange="updateTrField('${escHtml(r.transaction_id)}', 'aciklama', this.value)" /></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function updateTrField(id, field, val) {
+      const r = transactionsData.find(x => x.transaction_id === id);
+      if (!r) return;
+      r[field] = val;
+      if (field === "islem_yonu") {
+        r.borc_hesapkodu = val === "KESINTI" ? "196.001" : "770.002.001";
+        renderTransactionsTable();
+      }
+    }
+
+    function toggleTrRow(id, checked) {
+      if (checked) selectedTrIds.add(id);
+      else selectedTrIds.delete(id);
+      renderTransactionsTable();
+    }
+
+    function toggleAllTransactions(checked) {
+      transactionsData.forEach(r => {
+        if (checked && r.durum === "approved") selectedTrIds.add(r.transaction_id);
+        else selectedTrIds.delete(r.transaction_id);
+      });
+      renderTransactionsTable();
+    }
+
+    async function pushSelectedTransactions(mode) {
+      const selected = transactionsData.filter(r => selectedTrIds.has(r.transaction_id));
+      if (!selected.length) {
+        showBanner("Lütfen aktarılacak en az 1 hareket seçin.", "error");
+        return;
+      }
+      const modeName = mode === "mahsup" ? "Muhasebe Mahsup Fişi" : "Personel Ek Ödeme / Kesinti Fişi";
+      if (!confirm(`Seçilen ${selected.length} hareket DİA'ya ${modeName} olarak kaydedilecek. Onaylıyor musunuz?`)) return;
+
+      openProgressModal({
+        title: `Avans / Ek Ödeme DİA ERP'ye Aktarılıyor...`,
+        subtitle: `${selected.length} hareket ${modeName} olarak DİA'ya gönderiliyor...`,
+        m1Label: "SEÇİLEN HAREKET",
+        m2Label: "AKTARILAN",
+        m3Label: "BAŞARILI",
+        m4Label: "HATALI",
+        total: selected.length,
+      });
+      appendProgressLog(`▶ ${selected.length} hareket (${modeName}) DİA ERP'ye gönderiliyor...`);
+
+      try {
+        const res = await fetch("/api/transactions/push", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rows: selected, mode }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Aktarım hatası");
+
+        const addedCnt = Number(data.added || 0);
+        const errCnt = Number(data.errors || 0);
+        (data.results || []).forEach(item => {
+          if (item.status === "ERROR") {
+            appendProgressLog(`✕ ${item.ad_soyad} -> HATA: ${item.message}`, "#f87171");
+          } else {
+            appendProgressLog(`✓ [${item.sicilno || "-"}] ${item.ad_soyad} -> DİA'ya Eklendi`, "#4ade80");
+          }
+        });
+        updateProgressModal({
+          processed: selected.length,
+          total: selected.length,
+          m1Val: selected.length,
+          m2Val: `${selected.length} / ${selected.length}`,
+          m3Val: addedCnt,
+          m4Val: errCnt,
+        });
+        appendProgressLog(`✓ ${modeName} işlemi tamamlandı (${addedCnt} başarılı, ${errCnt} hata).`, errCnt > 0 ? "#fbbf24" : "#4ade80");
+        finishProgressModal({
+          title: "Avans / Ek Ödeme Aktarımı Tamamlandı",
+          subtitle: `${selected.length} hareketten ${addedCnt} kayıt oluşturuldu, ${errCnt} hata.`,
+          hasError: errCnt > 0,
+        });
+
+        showBanner(`${modeName} başarıyla DİA'ya kaydedildi (${addedCnt} kayıt, ${errCnt} hata).`, errCnt > 0 ? "error" : "success");
+        await loadHealth();
+      } catch (e) {
+        appendProgressLog(`✕ Hata: ${e.message}`, "#f87171");
+        finishProgressModal({ title: "Aktarım Hatası", subtitle: e.message, hasError: true });
+        showBanner(`Hata: ${e.message}`, "error");
+      }
+    }
+
+    // --- 5A. AYLIK PUANTAJ TABLOSU (K5: Kıstelyevm & Resmi Tatil Mesaisi Düzenlenebilir) ---
+    function recalcPuantajRowDays(r) {
+      const hs = Number(r.haftasonugun || 0);
+      const rt = Number(r.resmitatilgun || 0);
+      const ucretli = Number(r.izinliucretligun || 0);
+      const ucretsiz = Number(r.izinliucretsizgun || 0);
+      const rapor = Number(r.doktorraporugun || 0);
+
+      // Ay içi kıstelyevm varsa baz günü koru, yoksa 30 gün baz al
+      const baseDays = Number(r.base_days || 30);
+      r.toplamsigortagun = Math.max(0, Math.min(30, Number((baseDays - ucretsiz - rapor).toFixed(2))));
+      r.normalmesaigun = Math.max(0, Number((r.toplamsigortagun - hs - rt - ucretli).toFixed(2)));
+      r.toplambordrogun = r.toplamsigortagun;
+    }
+
+    function renderPuantajTable() {
+      const tbody = document.getElementById("puantajTableBody");
+      const q = normTR(document.getElementById("puantajSearch").value);
+      const list = puantajData.filter(r => !q || normTR(`${r.ad_soyad} ${r.sicilno} ${r.departman}`).includes(q));
+      document.getElementById("selPuantajCount").textContent = selectedPuantajIds.size;
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="18" style="text-align:center; padding:24px; color:var(--text-muted);">Puantaj verisi yok.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(r => {
+        const checked = selectedPuantajIds.has(r.kolayik_person_id) ? "checked" : "";
+        const stBadge = r.already_in_dia
+          ? `<span class="badge badge-synced">Mevcut</span>`
+          : (r.in_dia ? `<span class="badge badge-update">Yeni Puantaj</span>` : `<span class="badge badge-new">Önce Personeli Aktar</span>`);
+        const sgkSaat = (Number(r.toplamsigortagun || 0) * 7.5).toFixed(2);
+        const pidEsc = escHtml(r.kolayik_person_id);
+
+        return `
+          <tr class="${checked ? 'selected-row' : ''}">
+            <td><input type="checkbox" ${checked} onchange="togglePuantajRow('${pidEsc}', this.checked)" /></td>
+            <td>${stBadge}</td>
+            <td class="num">${escHtml(r.sicilno)}</td>
+            <td style="font-weight:600;">${escHtml(r.ad_soyad)}</td>
+            <td>
+              <select class="cell-input" onchange="updatePuantajField('${pidEsc}', 'ucretturu', this.value)">
+                <option value="N" ${r.ucretturu === 'N' ? 'selected' : ''}>Net</option>
+                <option value="B" ${r.ucretturu === 'B' ? 'selected' : ''}>Brüt</option>
+              </select>
+            </td>
+            <td><input type="number" step="0.01" class="cell-input cell-num" value="${Number(r.maas || 0)}" onchange="updatePuantajField('${pidEsc}', 'maas', parseFloat(this.value || 0))" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.normalmesaigun || 0)}" onchange="updatePuantajField('${pidEsc}', 'normalmesaigun', parseFloat(this.value || 0), true)" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.haftasonugun || 0)}" onchange="updatePuantajField('${pidEsc}', 'haftasonugun', parseFloat(this.value || 0), false)" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.resmitatilgun || 0)}" onchange="updatePuantajField('${pidEsc}', 'resmitatilgun', parseFloat(this.value || 0), false)" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.izinliucretligun || 0)}" onchange="updatePuantajField('${pidEsc}', 'izinliucretligun', parseFloat(this.value || 0), false)" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.izinliucretsizgun || 0)}" onchange="updatePuantajField('${pidEsc}', 'izinliucretsizgun', parseFloat(this.value || 0), false)" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.doktorraporugun || 0)}" onchange="updatePuantajField('${pidEsc}', 'doktorraporugun', parseFloat(this.value || 0), false)" /></td>
+            <td><input type="number" step="0.5" class="cell-input cell-num" value="${Number(r.toplamsigortagun || 0)}" onchange="updatePuantajField('${pidEsc}', 'toplamsigortagun', parseFloat(this.value || 0), true)" /></td>
+            <td class="num" style="text-align:right;">${sgkSaat}</td>
+            <td><input type="number" step="0.25" class="cell-input cell-num" value="${Number(r.fazlamesai1saat || 0)}" onchange="updatePuantajField('${pidEsc}', 'fazlamesai1saat', parseFloat(this.value || 0), true)" /></td>
+            <td><input type="number" step="0.25" class="cell-input cell-num" value="${Number(r.haftasonumesaisisaat || 0)}" onchange="updatePuantajField('${pidEsc}', 'haftasonumesaisisaat', parseFloat(this.value || 0), true)" /></td>
+            <td><input type="number" step="0.25" class="cell-input cell-num" value="${Number(r.resmitatilmesaisisaat || 0)}" onchange="updatePuantajField('${pidEsc}', 'resmitatilmesaisisaat', parseFloat(this.value || 0), true)" /></td>
+            <td class="num" style="text-align:right; font-weight:600; color:var(--success);">
+              ${r.dia_hesaplanan_net > 0 ? fmtMoney(r.dia_hesaplanan_net) + ' TL' : '-'}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function updatePuantajField(pid, field, val, manualOverride) {
+      const r = puantajData.find(x => x.kolayik_person_id === pid);
+      if (!r) return;
+      r[field] = val;
+      if (!manualOverride) {
+        recalcPuantajRowDays(r);
+      } else if (field === "normalmesaigun") {
+        r.toplamsigortagun = Math.min(30, Number((Number(r.normalmesaigun) + Number(r.haftasonugun) + Number(r.resmitatilgun) + Number(r.izinliucretligun)).toFixed(2)));
+        r.toplambordrogun = r.toplamsigortagun;
+      }
+      selectedPuantajIds.add(pid);
+      renderPuantajTable();
+    }
+
+    function togglePuantajRow(pid, checked) {
+      if (checked) selectedPuantajIds.add(pid);
+      else selectedPuantajIds.delete(pid);
+      renderPuantajTable();
+    }
+
+    function toggleAllPuantaj(checked) {
+      puantajData.forEach(r => {
+        if (checked && r.in_dia) selectedPuantajIds.add(r.kolayik_person_id);
+        else selectedPuantajIds.delete(r.kolayik_person_id);
+      });
+      renderPuantajTable();
+    }
+
+    async function pushSelectedTimesheets() {
+      const selected = puantajData.filter(r => selectedPuantajIds.has(r.kolayik_person_id));
+      if (!selected.length) {
+        showBanner("Lütfen DİA'ya aktarılacak en az 1 puantaj satırı seçin.", "error");
+        return;
+      }
+      if (!confirm(`Seçilen ${selected.length} personel için DİA Puantaj kaydedilecek ve DİA vergi/SGK/net maaş hesaplamasını yapacak. Onaylıyor musunuz?`)) return;
+
+      const btn = document.getElementById("btnPushPuantaj");
+      btn.disabled = true;
+      showBanner(`${selected.length} puantaj kaydı DİA ERP'ye gönderiliyor...`, "info");
+
+      const total = selected.length;
+      const batchSize = 5;
+      let processed = 0;
+      let totalAdded = 0;
+      let totalUpdated = 0;
+      let totalErrors = 0;
+      const allErrorMsgs = [];
+
+      openProgressModal({
+        title: "Aylık Puantajlar DİA ERP'ye Aktarılıyor...",
+        subtitle: `Toplam ${total} personel puantajı DİA'ya gönderiliyor ve SGK/Vergi hesaplanıyor...`,
+        m1Label: "SEÇİLEN PUANTAJ",
+        m2Label: "AKTARILAN / İŞLENEN",
+        m3Label: "EKLENEN / GÜNCELLENEN",
+        m4Label: "HATALI KAYIT",
+        total,
+      });
+
+      try {
+        for (let i = 0; i < total; i += batchSize) {
+          const chunk = selected.slice(i, i + batchSize);
+          const res = await fetch("/api/timesheets/push", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ rows: chunk }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.detail || "Puantaj aktarım hatası");
+
+          processed += chunk.length;
+          totalAdded += Number(data.added || 0);
+          totalUpdated += Number(data.updated || 0);
+          totalErrors += Number(data.errors || 0);
+
+          (data.results || []).forEach(item => {
+            if (item.status === "ERROR") {
+              allErrorMsgs.push(`${item.ad_soyad}: ${item.message}`);
+              appendProgressLog(`✕ [${item.sicilno || "-"}] ${item.ad_soyad} -> HATA: ${item.message}`, "#f87171");
+            } else {
+              appendProgressLog(`✓ [${item.sicilno}] ${item.ad_soyad} -> Puantaj ${item.action === "ADDED" ? "eklendi" : "güncellendi"}`, "#4ade80");
+            }
+          });
+
+          updateProgressModal({
+            subtitle: `${processed} / ${total} puantaj işlendi (${totalAdded} eklendi, ${totalUpdated} güncellendi)`,
+            processed,
+            total,
+            m1Val: total,
+            m2Val: `${processed} / ${total}`,
+            m3Val: `${totalAdded} / ${totalUpdated}`,
+            m4Val: totalErrors,
+          });
+        }
+
+        finishProgressModal({
+          title: "Puantaj Aktarımı Tamamlandı",
+          subtitle: `Toplam ${total} puantajdan ${totalAdded} yeni eklendi, ${totalUpdated} güncellendi, ${totalErrors} hata oluştu.`,
+          hasError: totalErrors > 0,
+        });
+
+        showBanner(
+          `Puantaj aktarımı tamamlandı: ${totalAdded} yeni eklendi, ${totalUpdated} güncellendi, ${totalErrors} hata. ${allErrorMsgs.slice(0, 3).join(" | ")}`,
+          totalErrors > 0 ? "error" : "success"
+        );
+        await fetchAllStagedData(true);
+        await loadHealth();
+      } catch (e) {
+        appendProgressLog(`✕ Hata: ${e.message}`, "#f87171");
+        finishProgressModal({ title: "Puantaj Aktarım Hatası", subtitle: e.message, hasError: true });
+        showBanner(`Hata: ${e.message}`, "error");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // --- 5B. MUHASEBE MAHSUP FİŞİ TABLOSU ---
+    function renderMahsupTable() {
+      const tbody = document.getElementById("mahsupTableBody");
+      const lines = mahsupData.lines || [];
+
+      if (!lines.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">Bu dönemde DİA'da henüz hesaplanmış puantaj bulunmadığı için otomatik mahsup satırı oluşmadı. Üstteki 5A tablosundan puantajları DİA'ya kaydettiğinizde veya "+ Satır Ekle" ile manuel eklediğinizde burada listelenir.</td></tr>`;
+      } else {
+        tbody.innerHTML = lines.map((line, idx) => {
+          const info = muhAccountsMap[line.hesapkodu] || {};
+          return `
+            <tr>
+              <td>
+                <select class="cell-input num" onchange="updateMahsupLine(${idx}, 'hesapkodu', this.value)">
+                  ${Object.keys(muhAccountsMap).map(code => `<option value="${escHtml(code)}" ${code === line.hesapkodu ? 'selected' : ''}>${escHtml(code)}</option>`).join("")}
+                </select>
+              </td>
+              <td>${escHtml(info.aciklama || line.hesapadi || '')}</td>
+              <td><input class="cell-input" value="${escHtml(line.aciklama || '')}" onchange="updateMahsupLine(${idx}, 'aciklama', this.value)" /></td>
+              <td><input type="number" step="0.01" class="cell-input cell-num" value="${Number(line.borc || 0)}" onchange="updateMahsupLine(${idx}, 'borc', parseFloat(this.value || 0))" /></td>
+              <td><input type="number" step="0.01" class="cell-input cell-num" value="${Number(line.alacak || 0)}" onchange="updateMahsupLine(${idx}, 'alacak', parseFloat(this.value || 0))" /></td>
+              <td><button class="btn btn-secondary btn-xs" onclick="removeMahsupLine(${idx})">Sil</button></td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      const tBorc = lines.reduce((s, x) => s + Number(x.borc || 0), 0);
+      const tAlacak = lines.reduce((s, x) => s + Number(x.alacak || 0), 0);
+      const diff = Math.abs(tBorc - tAlacak);
+
+      document.getElementById("mahsupTotalBorc").textContent = fmtMoney(tBorc) + " TL";
+      document.getElementById("mahsupTotalAlacak").textContent = fmtMoney(tAlacak) + " TL";
+      const stEl = document.getElementById("mahsupBalanceStatus");
+      if (lines.length && diff <= 0.02) {
+        stEl.innerHTML = `<span class="badge badge-synced">Borç = Alacak Dengeli</span>`;
+      } else if (lines.length) {
+        stEl.innerHTML = `<span class="badge badge-danger">Fark: ${fmtMoney(tBorc - tAlacak)} TL</span>`;
+      } else {
+        stEl.innerHTML = "";
+      }
+    }
+
+    function updateMahsupLine(idx, field, val) {
+      const line = mahsupData.lines[idx];
+      if (!line) return;
+      line[field] = val;
+      if (field === "hesapkodu" && muhAccountsMap[val]) {
+        line.hesapadi = muhAccountsMap[val].aciklama;
+        line._key_muh_hesapkarti = muhAccountsMap[val]._key;
+      }
+      renderMahsupTable();
+    }
+
+    function addMahsupLine() {
+      mahsupData.lines = mahsupData.lines || [];
+      mahsupData.lines.push({
+        hesapkodu: "770.002.001",
+        hesapadi: "PERSONEL - BRÜT ÜCRETLER",
+        _key_muh_hesapkarti: 7853,
+        borc: 0,
+        alacak: 0,
+        aciklama: document.getElementById("mahsupAciklama").value || "Maaş Tahakkuk Kalemi",
+      });
+      renderMahsupTable();
+    }
+
+    function removeMahsupLine(idx) {
+      mahsupData.lines.splice(idx, 1);
+      renderMahsupTable();
+    }
+
+    async function pushMahsupVoucher() {
+      const lines = mahsupData.lines || [];
+      if (!lines.length) {
+        showBanner("Kaydedilecek mahsup fişi satırı yok.", "error");
+        return;
+      }
+      const fisno = document.getElementById("mahsupFisNo").value.trim();
+      const tarih = document.getElementById("mahsupTarih").value;
+      const aciklama = document.getElementById("mahsupAciklama").value.trim();
+
+      if (!confirm(`${tarih} tarihli ve ${fisno} numaralı Maaş Tahakkuk Mahsup Fişi DİA Muhasebe modülüne kaydedilecek. Onaylıyor musunuz?`)) return;
+
+      openProgressModal({
+        title: "Maaş Tahakkuk Mahsup Fişi DİA'ya Kaydediliyor...",
+        subtitle: `${fisno} numaralı fiş (${lines.length} muhasebe kalemi) DİA ERP servisine gönderiliyor...`,
+        m1Label: "TOPLAM KALEM",
+        m2Label: "İŞLENEN KALEM",
+        m3Label: "FİŞ NO",
+        m4Label: "HATA",
+        total: lines.length,
+      });
+      appendProgressLog(`▶ ${tarih} tarihli ${fisno} numaralı Mahsup Fişi (${lines.length} satır) gönderiliyor...`);
+
+      try {
+        const res = await fetch("/api/mahsup/push", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tarih, fisno, aciklama, lines }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Mahsup fişi hatası");
+
+        updateProgressModal({
+          processed: lines.length,
+          total: lines.length,
+          m1Val: lines.length,
+          m2Val: `${lines.length} / ${lines.length}`,
+          m3Val: fisno,
+          m4Val: 0,
+        });
+        appendProgressLog(`✓ Mahsup fişi (${fisno}) başarıyla DİA ERP'ye kaydedildi!`, "#4ade80");
+        finishProgressModal({
+          title: "Mahsup Fişi Kaydedildi",
+          subtitle: `${fisno} numaralı ve ${lines.length} kalemli Maaş Tahakkuk Mahsup Fişi DİA'ya aktarıldı.`,
+          hasError: false,
+        });
+
+        showBanner(`Mahsup fişi (${fisno}) başarıyla DİA ERP'ye kaydedildi!`, "success");
+        await loadHealth();
+      } catch (e) {
+        appendProgressLog(`✕ Hata: ${e.message}`, "#f87171");
+        finishProgressModal({ title: "Mahsup Fişi Hatası", subtitle: e.message, hasError: true });
+        showBanner(`Hata: ${e.message}`, "error");
+      }
+    }
+
+    // --- Güncelleme & Ayarlar ---
+    async function checkUpdates() {
+      try {
+        const res = await fetch("/api/update/check");
+        const data = await res.json();
+        if (data.update_available) {
+          if (confirm(`Yeni sürüm mevcut: v${data.remote_version}\nNotlar: ${data.notes}\n\nŞimdi güncellensin mi?`)) {
+            const upRes = await fetch("/api/update/apply", { method: "POST" });
+            const upData = await upRes.json();
+            if (!upRes.ok) throw new Error(upData.detail || "Güncelleme hatası");
+            if (upData.status === "INSTALLER_REQUIRED" && upData.installer_url) {
+              showBanner(upData.message, "info");
+              window.open(upData.installer_url, "_blank", "noopener");
+            } else {
+              showBanner(upData.message, "success");
+              await loadHealth();
+            }
+          }
+        } else {
+          showBanner(data.message, "info");
+        }
+      } catch (e) {
+        showBanner(`Güncelleme kontrol hatası: ${e.message}`, "error");
+      }
+    }
+
+    async function openSettingsModal() {
+      const res = await fetch("/api/settings");
+      const data = await res.json();
+      document.getElementById("setKolayToken").value = "";
+      document.getElementById("setKolayToken").placeholder = `Kayıtlı Token: ${data.kolayik_token_masked}`;
+      document.getElementById("setDiaBaseUrl").value = data.dia_base_url || "";
+      document.getElementById("setDiaUser").value = data.dia_username || "";
+      document.getElementById("setDiaPass").value = "";
+      document.getElementById("setDiaApiKey").value = "";
+      document.getElementById("setDiaApiKey").placeholder = `Kayıtlı API Key: ${data.dia_apikey_masked || 'Boş'}`;
+      document.getElementById("setDiaFirma").value = data.dia_firma_kodu || 1;
+      document.getElementById("setDiaDonem").value = data.dia_donem_kodu || 1;
+      document.getElementById("setDiaSubeKey").value = data.dia_sube_key || 2279;
+      document.getElementById("setGithubRepo").value = data.github_repo || "";
+      document.getElementById("settingsModal").classList.add("show");
+    }
+
+    function closeSettingsModal() {
+      document.getElementById("settingsModal").classList.remove("show");
+    }
+
+    async function saveSettings() {
+      const payload = {
+        kolayik_api_token: document.getElementById("setKolayToken").value,
+        dia_base_url: document.getElementById("setDiaBaseUrl").value,
+        dia_username: document.getElementById("setDiaUser").value,
+        dia_password: document.getElementById("setDiaPass").value,
+        dia_apikey: document.getElementById("setDiaApiKey").value,
+        dia_firma_kodu: parseInt(document.getElementById("setDiaFirma").value || "1", 10),
+        dia_donem_kodu: parseInt(document.getElementById("setDiaDonem").value || "1", 10),
+        dia_sube_key: parseInt(document.getElementById("setDiaSubeKey").value || "2279", 10),
+      };
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showBanner(data.detail || "Ayarlar kaydedilemedi.", "error");
+        return;
+      }
+      closeSettingsModal();
+      showBanner(data.message || "Ayarlar güncellendi.", "success");
+      await loadHealth();
+      await fetchAllStagedData();
+    }
+
+    // Başlangıçta çalıştır
+    window.addEventListener("DOMContentLoaded", async () => {
+      initDynamicPeriodButtons();
+      await loadHealth();
+      await fetchAllStagedData();
+    });
+  </script>
+</body>
+</html>
